@@ -8,6 +8,8 @@ import by.vitikova.discovery.exception.EntityNotFoundException;
 import by.vitikova.discovery.repository.RecordRepository;
 import by.vitikova.discovery.service.RecordService;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,6 +26,7 @@ public class RecordServiceImpl implements RecordService {
 
     private RecordRepository recordRepository;
     private RecordConverter recordConverter;
+    private static final Logger logger = LoggerFactory.getLogger(RecordServiceImpl.class);
 
     /**
      * Находит запись по идентификатору.
@@ -34,6 +37,7 @@ public class RecordServiceImpl implements RecordService {
      */
     @Override
     public RecordDto findById(Long id) {
+        logger.info("RecordService: find record with id: " + id);
         return recordConverter.convert(recordRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
@@ -45,6 +49,7 @@ public class RecordServiceImpl implements RecordService {
      */
     @Override
     public List<RecordDto> findByUserId(String id) {
+        logger.info("RecordService: find record with user id: " + id);
         var listRecord = recordRepository.findRecordByUserLogin(id);
         return listRecord.stream().map(recordConverter::convert).collect(Collectors.toList());
     }
@@ -56,6 +61,7 @@ public class RecordServiceImpl implements RecordService {
      */
     @Override
     public List<RecordDto> findAll() {
+        logger.info("RecordService: find all record");
         var listRecord = recordRepository.findAll();
         return listRecord.stream().map(recordConverter::convert).collect(Collectors.toList());
     }
@@ -68,6 +74,7 @@ public class RecordServiceImpl implements RecordService {
      */
     @Override
     public RecordDto create(RecordCreateDto dto) {
+        logger.info("RecordService: create record");
         var record = recordConverter.convert(dto);
         if (record.getUuidAvatar().equals("")) {
             record.setUuidAvatar(DEFAULT_UUID);
@@ -85,6 +92,7 @@ public class RecordServiceImpl implements RecordService {
      */
     @Override
     public RecordDto updateAvatarUuid(Long recordId, String uuidAvatar) {
+        logger.info("RecordService: update avatar for record");
         var record = recordRepository.findById(recordId).orElseThrow(EntityNotFoundException::new);
         record.setUuidAvatar(uuidAvatar);
         return recordConverter.convert(recordRepository.save(record));
@@ -99,6 +107,7 @@ public class RecordServiceImpl implements RecordService {
      */
     @Override
     public RecordDto update(RecordUpdateDto dto) {
+        logger.info("RecordService: update record");
         var record = recordRepository.findById(dto.getId()).orElseThrow(EntityNotFoundException::new);
         recordConverter.merge(record, dto);
         return recordConverter.convert(recordRepository.save(record));
@@ -111,6 +120,7 @@ public class RecordServiceImpl implements RecordService {
      */
     @Override
     public void delete(Long id) {
+        logger.info("RecordService: delete record with id: " + id);
         recordRepository.deleteById(id);
     }
 }
