@@ -304,3 +304,8 @@ Response:
 Не возвращают ничего:
 
 - delete(@PathVariable("id") Long id)
+
+## PedigreeController ()
+
+Контроллер поддерживает следующие операции:
+
