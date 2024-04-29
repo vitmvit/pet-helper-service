@@ -1,6 +1,5 @@
 package by.vitikova.discovery.model.entity;
 
-import by.vitikova.discovery.constant.SexName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,18 +17,18 @@ public class Pedigree {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long ownerId;
+    @Column(nullable = true)
+    private Long recordId;
 
-    @Column(nullable = false)
-    private Long petId;
+    @Column(nullable = true)
+    private Long parentExistOneId;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = true)
+    private Long parentExistTwoId;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private SexName sex;
+    @Column(nullable = true)
+    private Long parentNotExistOneId;
 
-    @Column(nullable = false)
-    private String description;
+    @Column(nullable = true)
+    private Long parentNotExistTwoId;
 }

@@ -1,6 +1,7 @@
 package by.vitikova.discovery.model.entity;
 
 import by.vitikova.discovery.constant.SexName;
+import by.vitikova.discovery.listener.RecordListener;
 import by.vitikova.discovery.model.entity.parent.LogModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
+@EntityListeners(RecordListener.class)
 public class Record extends LogModel {
 
     @Id
