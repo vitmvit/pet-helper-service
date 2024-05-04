@@ -32,6 +32,13 @@ public class StateController {
                 .body(stateService.findAll());
     }
 
+    @GetMapping("dict/{id}")
+    public ResponseEntity<List<StateDto>> findByDictionaryId(@PathVariable("id") Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(stateService.findByDictionaryId(id));
+    }
+
     @PostMapping
     public ResponseEntity<StateDto> create(@RequestBody StateCreateDto stateCreateDto) {
         return ResponseEntity

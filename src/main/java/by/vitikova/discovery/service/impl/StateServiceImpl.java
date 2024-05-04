@@ -4,6 +4,7 @@ import by.vitikova.discovery.StateDto;
 import by.vitikova.discovery.converter.StateConverter;
 import by.vitikova.discovery.create.StateCreateDto;
 import by.vitikova.discovery.exception.EntityNotFoundException;
+import by.vitikova.discovery.repository.StateDictionaryRepository;
 import by.vitikova.discovery.repository.StateRepository;
 import by.vitikova.discovery.service.StateService;
 import by.vitikova.discovery.update.StateUpdateDto;
@@ -21,6 +22,7 @@ public class StateServiceImpl implements StateService {
 
     private static final Logger logger = LoggerFactory.getLogger(RecordServiceImpl.class);
     private StateRepository stateRepository;
+    private StateDictionaryRepository stateDictionaryRepository;
     private StateConverter stateConverter;
 
     /**
@@ -35,6 +37,19 @@ public class StateServiceImpl implements StateService {
         logger.info("StateService: find state with id: " + id);
         return stateConverter.convert(stateRepository.findById(id).orElseThrow(EntityNotFoundException::new));
 
+    }
+
+    /**
+     * Метод для получения списка объектов StateDto, соответствующих словарю с заданным идентификатором.
+     *
+     * @param id идентификатор словаря, для которого необходимо получить список состояний
+     * @return список объектов StateDto, соответствующих заданному словарю
+     */
+    @Override
+    public List<StateDto> findByDictionaryId(Long id) {
+        logger.info("StateService: find stats with dictionary id: " + id);
+        var stateList = stateRepository.findStateByDictionary_Id(id);
+        return stateList.stream().map(stateConverter::convert).collect(Collectors.toList());
     }
 
     /**
@@ -58,8 +73,10 @@ public class StateServiceImpl implements StateService {
     @Override
     public StateDto create(StateCreateDto dto) {
         logger.info("StateService: create state");
-        var record = stateConverter.convert(dto);
-        return stateConverter.convert(stateRepository.save(record));
+        var dict = stateDictionaryRepository.findById(dto.getDictionaryId()).orElseThrow(EntityNotFoundException::new);
+        var state = stateConverter.convert(dto);
+        state.setDictionary(dict);
+        return stateConverter.convert(stateRepository.save(state));
     }
 
     /**

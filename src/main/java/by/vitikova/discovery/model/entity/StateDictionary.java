@@ -32,11 +32,19 @@ public class StateDictionary {
     @Column(nullable = false)
     private boolean isActive;
 
+    // TODO: 30.04.2024 как выставлять этот флаг
+    @Column(nullable = false)
+    private boolean isConstant;
+
+    private String uuid;
+
+    private String description;
+
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private LocalDateTime dateCreated;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "state", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dictionary", cascade = CascadeType.ALL)
     private List<State> listState;
 }

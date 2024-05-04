@@ -10,6 +10,8 @@ public interface StateService {
 
     StateDto findById(Long id);
 
+    List<StateDto> findByDictionaryId(Long id);
+
     List<StateDto> findAll();
 
     StateDto create(StateCreateDto dto);

@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface StateRepository extends JpaRepository<State, Long> {
 
-    List<State> findStateById(Long id);
+    List<State> findStateByDictionary_Id(Long id);
 }
