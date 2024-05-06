@@ -10,6 +10,8 @@ import by.vitikova.discovery.service.RecordService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,6 +37,7 @@ public class RecordServiceImpl implements RecordService {
      * @return Объект RecordDto, представляющий найденную запись.
      * @throws EntityNotFoundException если запись не найдена.
      */
+    @Cacheable(value = "record", key = "#id")
     @Override
     public RecordDto findById(Long id) {
         logger.info("RecordService: find record with id: " + id);
@@ -90,6 +93,7 @@ public class RecordServiceImpl implements RecordService {
      * @return Объект RecordDto, представляющий обновленную запись.
      * @throws EntityNotFoundException если запись не найдена.
      */
+    @CacheEvict(value = "records", key = "#recordId")
     @Override
     public RecordDto updateAvatarUuid(Long recordId, String uuidAvatar) {
         logger.info("RecordService: update avatar for record");
@@ -105,6 +109,7 @@ public class RecordServiceImpl implements RecordService {
      * @return Объект RecordDto, представляющий обновленную запись.
      * @throws EntityNotFoundException если запись не найдена.
      */
+    @CacheEvict(value = "records", key = "#dto.id")
     @Override
     public RecordDto update(RecordUpdateDto dto) {
         logger.info("RecordService: update record");
@@ -118,6 +123,7 @@ public class RecordServiceImpl implements RecordService {
      *
      * @param id Идентификатор записи для удаления.
      */
+    @CacheEvict(value = "records", allEntries = true)
     @Override
     public void delete(Long id) {
         logger.info("RecordService: delete record with id: " + id);

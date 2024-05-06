@@ -32,7 +32,6 @@ public class StateDictionary {
     @Column(nullable = false)
     private boolean isActive;
 
-    // TODO: 30.04.2024 как выставлять этот флаг
     @Column(nullable = false)
     private boolean isConstant;
 

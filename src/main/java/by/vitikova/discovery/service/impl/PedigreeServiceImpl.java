@@ -12,6 +12,8 @@ import by.vitikova.discovery.update.PedigreeUpdateDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,6 +35,7 @@ public class PedigreeServiceImpl implements PedigreeService {
      * @return Объект PedigreeDto, представляющий найденную запись.
      * @throws EntityNotFoundException если запись не найдена.
      */
+    @Cacheable(value = "pedigree", key = "#id")
     @Override
     public PedigreeDto findById(Long id) {
         logger.info("PedigreeService: find pedigree with id: " + id);
@@ -70,6 +73,7 @@ public class PedigreeServiceImpl implements PedigreeService {
      * @param dto Объект PedigreeCreateDto, содержащий данные для создания записи.
      * @return Объект PedigreeDto, представляющий созданную запись.
      */
+    @CacheEvict(value = "pedigrees", key = "#dto.recordId")
     @Override
     public PedigreeDto create(PedigreeCreateDto dto) {
         logger.info("PedigreeService: create pedigree");
@@ -93,6 +97,7 @@ public class PedigreeServiceImpl implements PedigreeService {
      * @return Объект PedigreeDto, представляющий обновленную запись.
      * @throws EntityNotFoundException если запись не найдена.
      */
+    @CacheEvict(value = "pedigrees", key = "#dto.id")
     @Override
     public PedigreeDto update(PedigreeUpdateDto dto) {
         logger.info("PedigreeService: update pedigree");
@@ -107,6 +112,7 @@ public class PedigreeServiceImpl implements PedigreeService {
      *
      * @param id Идентификатор записи для удаления.
      */
+    @CacheEvict(value = "pedigrees", allEntries = true)
     @Override
     public void delete(Long id) {
         logger.info("PedigreeService: delete pedigree with id: " + id);

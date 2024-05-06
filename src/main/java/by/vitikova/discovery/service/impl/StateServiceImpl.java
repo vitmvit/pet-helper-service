@@ -11,6 +11,8 @@ import by.vitikova.discovery.update.StateUpdateDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class StateServiceImpl implements StateService {
      * @return Объект StateDto, представляющий найденную запись.
      * @throws EntityNotFoundException если запись не найдена.
      */
+    @Cacheable(value = "state", key = "#id")
     @Override
     public StateDto findById(Long id) {
         logger.info("StateService: find state with id: " + id);
@@ -70,6 +73,7 @@ public class StateServiceImpl implements StateService {
      * @param dto Объект StateCreateDto, содержащий данные для создания записи.
      * @return Объект StateDto, представляющий созданную запись.
      */
+    @CacheEvict(value = "states", key = "#dto.dictionaryId")
     @Override
     public StateDto create(StateCreateDto dto) {
         logger.info("StateService: create state");
@@ -86,6 +90,7 @@ public class StateServiceImpl implements StateService {
      * @return Объект StateDto, представляющий обновленную запись.
      * @throws EntityNotFoundException если запись не найдена.
      */
+    @CacheEvict(value = "states", key = "#dto.id")
     @Override
     public StateDto update(StateUpdateDto dto) {
         logger.info("StateService: update state witd id: " + dto.getId());
@@ -99,6 +104,7 @@ public class StateServiceImpl implements StateService {
      *
      * @param id Идентификатор записи для удаления.
      */
+    @CacheEvict(value = "states", allEntries = true)
     @Override
     public void delete(Long id) {
         logger.info("StateService: delete state with id: " + id);

@@ -27,7 +27,7 @@ public class State {
     @Column(nullable = false)
     private LocalDateTime dateCreated;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "dictionary_id",
             referencedColumnName = "id",

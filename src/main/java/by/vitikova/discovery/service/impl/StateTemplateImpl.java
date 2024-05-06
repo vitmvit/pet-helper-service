@@ -10,6 +10,8 @@ import by.vitikova.discovery.update.StateTemplateUpdateDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +36,7 @@ public class StateTemplateImpl implements StateTemplateService {
      * @return объект StateTemplateDto, соответствующий шаблону состояния с указанным идентификатором
      * @throws EntityNotFoundException если шаблон состояния с указанным идентификатором не найден
      */
+    @Cacheable(value = "template", key = "#id")
     @Override
     public StateTemplateDto findById(Long id) {
         logger.info("StateTemplateService: find state with id: " + id);
@@ -58,6 +61,7 @@ public class StateTemplateImpl implements StateTemplateService {
      * @param dto объект StateTemplateCreateDto, содержащий данные для создания шаблона состояния
      * @return объект StateTemplateDto, соответствующий созданному шаблону состояния
      */
+    @CacheEvict(value = "templates", key = "#dto.name")
     @Override
     public StateTemplateDto create(StateTemplateCreateDto dto) {
         logger.info("StateTemplateService: create state");
@@ -72,9 +76,10 @@ public class StateTemplateImpl implements StateTemplateService {
      * @return объект StateTemplateDto, соответствующий обновленному шаблону состояния
      * @throws EntityNotFoundException если шаблон состояния с указанным идентификатором не найден
      */
+    @CacheEvict(value = "templates", key = "#dto.id")
     @Override
     public StateTemplateDto update(StateTemplateUpdateDto dto) {
-        logger.info("StateTemplateService: update state witd id: " + dto.getId());
+        logger.info("StateTemplateService: update state with id: " + dto.getId());
         var record = stateTemplateRepository.findById(dto.getId()).orElseThrow(EntityNotFoundException::new);
         stateTemplateConverter.merge(record, dto);
         return stateTemplateConverter.convert(stateTemplateRepository.save(record));
@@ -85,6 +90,7 @@ public class StateTemplateImpl implements StateTemplateService {
      *
      * @param id идентификатор шаблона состояния, который нужно удалить
      */
+    @CacheEvict(value = "templates", allEntries = true)
     @Override
     public void delete(Long id) {
         logger.info("StateTemplateService: delete state with id: " + id);

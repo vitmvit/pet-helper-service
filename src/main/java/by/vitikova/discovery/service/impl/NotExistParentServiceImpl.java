@@ -10,6 +10,8 @@ import by.vitikova.discovery.update.NotExistParentUpdateDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +36,7 @@ public class NotExistParentServiceImpl implements NotExistParentService {
      * @return объект NotExistParentDto, соответствующий найденному NotExistParent
      * @throws EntityNotFoundException если объект NotExistParent не найден
      */
+    @Cacheable(value = "parent", key = "#id")
     @Override
     public NotExistParentDto findById(Long id) {
         logger.info("NotExistParentService: find parent with id: " + id);
@@ -58,6 +61,7 @@ public class NotExistParentServiceImpl implements NotExistParentService {
      * @param dto объект NotExistParentCreateDto, содержащий данные для создания нового NotExistParent
      * @return объект NotExistParentDto, соответствующий созданному NotExistParent
      */
+    @CacheEvict(value = "parents", key = "#dto.name")
     @Override
     public NotExistParentDto create(NotExistParentCreateDto dto) {
         logger.info("NotExistParentService: create parent");
@@ -72,6 +76,7 @@ public class NotExistParentServiceImpl implements NotExistParentService {
      * @return объект NotExistParentDto, соответствующий обновленному NotExistParent
      * @throws EntityNotFoundException если объект NotExistParent не найден
      */
+    @CacheEvict(value = "parents", key = "#dto.id")
     @Override
     public NotExistParentDto update(NotExistParentUpdateDto dto) {
         logger.info("NotExistParentService: update parent");
@@ -86,6 +91,7 @@ public class NotExistParentServiceImpl implements NotExistParentService {
      *
      * @param id идентификатор объекта NotExistParent, который нужно удалить
      */
+    @CacheEvict(value = "parents", allEntries = true)
     @Override
     public void delete(Long id) {
         logger.info("NotExistParentService: delete parent with id: " + id);

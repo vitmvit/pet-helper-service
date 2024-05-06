@@ -10,6 +10,8 @@ import by.vitikova.discovery.update.StateDictionaryUpdateDto;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,6 +34,7 @@ public class StateDictionaryServiceImpl implements StateDictionaryService {
      * @return Объект StateDictionaryDto, представляющий найденную запись.
      * @throws EntityNotFoundException если запись не найдена.
      */
+    @Cacheable(value = "dictionary", key = "#id")
     @Override
     public StateDictionaryDto findById(Long id) {
         logger.info("StateDictionaryService: find dictionary with id: " + id);
@@ -70,6 +73,7 @@ public class StateDictionaryServiceImpl implements StateDictionaryService {
      * @param dto Объект StateCreateDto, содержащий данные для создания записи.
      * @return Объект StateDto, представляющий созданную запись.
      */
+    @CacheEvict(value = "dictionaries", key = "#dto.recordId")
     @Override
     public StateDictionaryDto create(StateDictionaryCreateDto dto) {
         logger.info("StateDictionaryService: create dictionary");
@@ -88,6 +92,7 @@ public class StateDictionaryServiceImpl implements StateDictionaryService {
      * @return Объект StateDto, представляющий обновленную запись.
      * @throws EntityNotFoundException если запись не найдена.
      */
+    @CacheEvict(value = "dictionaries", key = "#dto.id")
     @Override
     public StateDictionaryDto update(StateDictionaryUpdateDto dto) {
         logger.info("StateDictionaryService: update dictionary with id: " + dto.getId());
@@ -101,6 +106,7 @@ public class StateDictionaryServiceImpl implements StateDictionaryService {
      *
      * @param id Идентификатор записи для удаления.
      */
+    @CacheEvict(value = "dictionaries", allEntries = true)
     @Override
     public void delete(Long id) {
         logger.info("StateDictionaryService: delete dictionary with id: " + id);
