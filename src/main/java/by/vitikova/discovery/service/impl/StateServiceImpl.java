@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class StateServiceImpl implements StateService {
 
-    private static final Logger logger = LoggerFactory.getLogger(RecordServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(StateServiceImpl.class);
     private StateRepository stateRepository;
     private StateDictionaryRepository stateDictionaryRepository;
     private StateConverter stateConverter;
@@ -39,7 +39,6 @@ public class StateServiceImpl implements StateService {
     public StateDto findById(Long id) {
         logger.info("StateService: find state with id: " + id);
         return stateConverter.convert(stateRepository.findById(id).orElseThrow(EntityNotFoundException::new));
-
     }
 
     /**
@@ -93,7 +92,7 @@ public class StateServiceImpl implements StateService {
     @CacheEvict(value = "states", key = "#dto.id")
     @Override
     public StateDto update(StateUpdateDto dto) {
-        logger.info("StateService: update state witd id: " + dto.getId());
+        logger.info("StateService: update state with id: " + dto.getId());
         var record = stateRepository.findById(dto.getId()).orElseThrow(EntityNotFoundException::new);
         stateConverter.merge(record, dto);
         return stateConverter.convert(stateRepository.save(record));

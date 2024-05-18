@@ -81,8 +81,8 @@ public class StateDictionaryServiceImpl implements StateDictionaryService {
         if (dto.getUuid() == null) {
             dto.setUuid(DEFAULT_DICTIONARY_UUID);
         }
-        var record = stateConverter.convert(dto);
-        return stateConverter.convert(stateDictionaryRepository.save(record));
+        var stateDictionary = stateConverter.convert(dto);
+        return stateConverter.convert(stateDictionaryRepository.save(stateDictionary));
     }
 
     /**
@@ -96,9 +96,9 @@ public class StateDictionaryServiceImpl implements StateDictionaryService {
     @Override
     public StateDictionaryDto update(StateDictionaryUpdateDto dto) {
         logger.info("StateDictionaryService: update dictionary with id: " + dto.getId());
-        var record = stateDictionaryRepository.findById(dto.getId()).orElseThrow(EntityNotFoundException::new);
-        stateConverter.merge(record, dto);
-        return stateConverter.convert(stateDictionaryRepository.save(record));
+        var stateDictionary = stateDictionaryRepository.findById(dto.getId()).orElseThrow(EntityNotFoundException::new);
+        stateConverter.merge(stateDictionary, dto);
+        return stateConverter.convert(stateDictionaryRepository.save(stateDictionary));
     }
 
     /**

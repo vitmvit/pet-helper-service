@@ -29,6 +29,12 @@ public class Record extends LogModel {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String animalType;
+
+    @Column(nullable = true)
+    private String breed;
+
     @Column(nullable = true)
     private String uuidAvatar;
 
