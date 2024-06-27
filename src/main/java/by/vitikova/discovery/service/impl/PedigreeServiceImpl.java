@@ -5,6 +5,7 @@ import by.vitikova.discovery.converter.PedigreeConverter;
 import by.vitikova.discovery.create.PedigreeCreateDto;
 import by.vitikova.discovery.exception.EntityNotFoundException;
 import by.vitikova.discovery.model.entity.Pedigree;
+import by.vitikova.discovery.repository.NotExistParentRepository;
 import by.vitikova.discovery.repository.PedigreeRepository;
 import by.vitikova.discovery.repository.RecordRepository;
 import by.vitikova.discovery.service.PedigreeService;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +27,7 @@ public class PedigreeServiceImpl implements PedigreeService {
 
     private static final Logger logger = LoggerFactory.getLogger(PedigreeServiceImpl.class);
     private PedigreeRepository pedigreeRepository;
+    private NotExistParentRepository notExistParentRepository;
     private RecordRepository recordRepository;
     private PedigreeConverter pedigreeConverter;
 
@@ -74,6 +77,7 @@ public class PedigreeServiceImpl implements PedigreeService {
      * @return Объект PedigreeDto, представляющий созданную запись.
      */
     @CacheEvict(value = "pedigrees", key = "#dto.recordId")
+    @Transactional
     @Override
     public PedigreeDto create(PedigreeCreateDto dto) {
         logger.info("PedigreeService: create pedigree");
@@ -98,6 +102,7 @@ public class PedigreeServiceImpl implements PedigreeService {
      * @throws EntityNotFoundException если запись не найдена.
      */
     @CacheEvict(value = "pedigrees", key = "#dto.id")
+    @Transactional
     @Override
     public PedigreeDto update(PedigreeUpdateDto dto) {
         logger.info("PedigreeService: update pedigree");
@@ -113,8 +118,16 @@ public class PedigreeServiceImpl implements PedigreeService {
      * @param id Идентификатор записи для удаления.
      */
     @CacheEvict(value = "pedigrees", allEntries = true)
+    @Transactional
     @Override
     public void delete(Long id) {
+        var pedigree = pedigreeRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        if (pedigree.getParentNotExistOneId() != null) {
+            notExistParentRepository.deleteById(pedigree.getParentNotExistOneId());
+        }
+        if (pedigree.getParentNotExistOneId() != null) {
+            notExistParentRepository.deleteById(pedigree.getParentExistTwoId());
+        }
         logger.info("PedigreeService: delete pedigree with id: " + id);
         pedigreeRepository.deleteById(id);
     }

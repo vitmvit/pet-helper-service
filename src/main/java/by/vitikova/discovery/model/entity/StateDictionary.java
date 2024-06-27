@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Audited
 @Entity
 @EntityListeners(StateDictionaryListener.class)
 public class StateDictionary {
@@ -31,9 +33,6 @@ public class StateDictionary {
 
     @Column(nullable = false)
     private boolean isActive;
-
-    @Column(nullable = false)
-    private boolean isConstant;
 
     private String uuid;
 

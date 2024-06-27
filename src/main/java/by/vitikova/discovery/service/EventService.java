@@ -12,6 +12,8 @@ public interface EventService {
 
     List<EventDto> findByDictionaryId(Long id);
 
+    void deleteBeforeDateByDictionaryId(Long id);
+
     List<EventDto> findAll();
 
     EventDto create(EventCreateDto dto);

@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,6 +74,7 @@ public class BreedServiceImpl implements BreedService {
      * @return Объект BreedDto, представляющий созданную запись.
      */
     @CacheEvict(value = "breeds", key = "#dto.typeId")
+    @Transactional
     @Override
     public BreedDto create(BreedCreateDto dto) {
         logger.info("BreedService: create breed");
@@ -90,6 +92,7 @@ public class BreedServiceImpl implements BreedService {
      * @throws EntityNotFoundException если запись не найдена.
      */
     @CacheEvict(value = "breeds", key = "#dto.id")
+    @Transactional
     @Override
     public BreedDto update(BreedUpdateDto dto) {
         logger.info("BreedService: update breed with id: " + dto.getId());
@@ -104,6 +107,7 @@ public class BreedServiceImpl implements BreedService {
      * @param id Идентификатор записи для удаления.
      */
     @CacheEvict(value = "breeds", allEntries = true)
+    @Transactional
     @Override
     public void delete(Long id) {
         logger.info("BreedService: delete breed with id: " + id);

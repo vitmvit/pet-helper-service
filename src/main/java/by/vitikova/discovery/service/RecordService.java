@@ -10,7 +10,7 @@ public interface RecordService {
 
     RecordDto findById(Long id);
 
-    List<RecordDto> findByUserId(String id);
+    List<RecordDto> findByUserLogin(String login);
 
     List<RecordDto> findAll();
 
@@ -19,6 +19,8 @@ public interface RecordService {
     RecordDto updateAvatarUuid(Long recordId, String uuidAvatar);
 
     RecordDto update(RecordUpdateDto dto);
+
+    void deleteRecordsByUserLogin(String login);
 
     void delete(Long id);
 }

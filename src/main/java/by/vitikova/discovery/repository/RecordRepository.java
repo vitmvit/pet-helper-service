@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface RecordRepository extends JpaRepository<Record, Long> {
 
-    List<Record> findRecordByUserLogin(String id);
+    List<Record> findRecordByUserLogin(String login);
 }

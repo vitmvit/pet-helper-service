@@ -53,6 +53,12 @@ public class EventController {
                 .body(eventService.update(eventUpdateDto));
     }
 
+    @DeleteMapping("dict/{id}")
+    public ResponseEntity<List<EventDto>> deleteBeforeDateByDictionaryId(@PathVariable("id") Long id) {
+        eventService.deleteBeforeDateByDictionaryId(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long id) {
         eventService.delete(id);

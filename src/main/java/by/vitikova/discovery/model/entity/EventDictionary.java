@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Audited
 @Entity
 @EntityListeners(EventDictionaryListener.class)
 public class EventDictionary {
@@ -32,12 +34,11 @@ public class EventDictionary {
     @Column(nullable = false)
     private boolean isActive;
 
-    @Column(nullable = false)
-    private boolean isConstant;
-
     private String uuid;
 
     private String description;
+
+    private String typeVaccination;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

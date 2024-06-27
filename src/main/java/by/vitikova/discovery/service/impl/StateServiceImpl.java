@@ -4,6 +4,8 @@ import by.vitikova.discovery.StateDto;
 import by.vitikova.discovery.converter.StateConverter;
 import by.vitikova.discovery.create.StateCreateDto;
 import by.vitikova.discovery.exception.EntityNotFoundException;
+import by.vitikova.discovery.model.entity.NotificationTime;
+import by.vitikova.discovery.repository.NotificationTimeRepository;
 import by.vitikova.discovery.repository.StateDictionaryRepository;
 import by.vitikova.discovery.repository.StateRepository;
 import by.vitikova.discovery.service.StateService;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +28,7 @@ public class StateServiceImpl implements StateService {
     private static final Logger logger = LoggerFactory.getLogger(StateServiceImpl.class);
     private StateRepository stateRepository;
     private StateDictionaryRepository stateDictionaryRepository;
+    private NotificationTimeRepository notificationTimeRepository;
     private StateConverter stateConverter;
 
     /**
@@ -73,6 +77,7 @@ public class StateServiceImpl implements StateService {
      * @return Объект StateDto, представляющий созданную запись.
      */
     @CacheEvict(value = "states", key = "#dto.dictionaryId")
+    @Transactional
     @Override
     public StateDto create(StateCreateDto dto) {
         logger.info("StateService: create state");
@@ -90,6 +95,7 @@ public class StateServiceImpl implements StateService {
      * @throws EntityNotFoundException если запись не найдена.
      */
     @CacheEvict(value = "states", key = "#dto.id")
+    @Transactional
     @Override
     public StateDto update(StateUpdateDto dto) {
         logger.info("StateService: update state with id: " + dto.getId());
@@ -104,8 +110,13 @@ public class StateServiceImpl implements StateService {
      * @param id Идентификатор записи для удаления.
      */
     @CacheEvict(value = "states", allEntries = true)
+    @Transactional
     @Override
     public void delete(Long id) {
+        var notificationTimeList = notificationTimeRepository.findNotificationTimesByStateId(id);
+        for (NotificationTime item : notificationTimeList) {
+            notificationTimeRepository.deleteById(item.getId());
+        }
         logger.info("StateService: delete state with id: " + id);
         stateRepository.deleteById(id);
     }

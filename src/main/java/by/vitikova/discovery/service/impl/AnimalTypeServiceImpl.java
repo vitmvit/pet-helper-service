@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,6 +66,7 @@ public class AnimalTypeServiceImpl implements AnimalTypeService {
      * @return Объект AnimalTypeDto, представляющий созданную запись.
      */
     @CacheEvict(value = "animalTypes", key = "#dto.name")
+    @Transactional
     @Override
     public AnimalTypeDto create(AnimalTypeCreateDto dto) {
         logger.info("AnimalTypeService: create animal type");
@@ -83,6 +85,7 @@ public class AnimalTypeServiceImpl implements AnimalTypeService {
      * @throws EntityNotFoundException если запись не найдена.
      */
     @CacheEvict(value = "animalTypes", key = "#dto.id")
+    @Transactional
     @Override
     public AnimalTypeDto update(AnimalTypeUpdateDto dto) {
         logger.info("AnimalTypeService: update animal type with id: " + dto.getId());
@@ -97,6 +100,7 @@ public class AnimalTypeServiceImpl implements AnimalTypeService {
      * @param id Идентификатор записи для удаления.
      */
     @CacheEvict(value = "animalTypes", allEntries = true)
+    @Transactional
     @Override
     public void delete(Long id) {
         logger.info("AnimalTypeService: delete animal type with id: " + id);

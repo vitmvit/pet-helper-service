@@ -4,7 +4,11 @@ import by.vitikova.discovery.EventDictionaryDto;
 import by.vitikova.discovery.converter.EventDictionaryConverter;
 import by.vitikova.discovery.create.EventDictionaryCreateDto;
 import by.vitikova.discovery.exception.EntityNotFoundException;
+import by.vitikova.discovery.model.entity.Notification;
+import by.vitikova.discovery.model.entity.NotificationTime;
 import by.vitikova.discovery.repository.EventDictionaryRepository;
+import by.vitikova.discovery.repository.NotificationRepository;
+import by.vitikova.discovery.repository.NotificationTimeRepository;
 import by.vitikova.discovery.service.EventDictionaryService;
 import by.vitikova.discovery.update.EventDictionaryUpdateDto;
 import lombok.AllArgsConstructor;
@@ -13,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +30,8 @@ public class EventDictionaryServiceImpl implements EventDictionaryService {
 
     private static final Logger logger = LoggerFactory.getLogger(EventDictionaryServiceImpl.class);
     private EventDictionaryRepository eventDictionaryRepository;
+    private NotificationTimeRepository notificationTimeRepository;
+    private NotificationRepository notificationRepository;
     private EventDictionaryConverter eventDictionaryConverter;
 
     /**
@@ -74,6 +81,7 @@ public class EventDictionaryServiceImpl implements EventDictionaryService {
      * @return Объект StateDto, представляющий созданную запись.
      */
     @CacheEvict(value = "dictionaries", key = "#dto.recordId")
+    @Transactional
     @Override
     public EventDictionaryDto create(EventDictionaryCreateDto dto) {
         logger.info("EventDictionaryService: create dictionary");
@@ -93,6 +101,7 @@ public class EventDictionaryServiceImpl implements EventDictionaryService {
      * @throws EntityNotFoundException если запись не найдена.
      */
     @CacheEvict(value = "dictionaries", key = "#dto.id")
+    @Transactional
     @Override
     public EventDictionaryDto update(EventDictionaryUpdateDto dto) {
         logger.info("EventDictionaryService: update dictionary with id: " + dto.getId());
@@ -107,8 +116,17 @@ public class EventDictionaryServiceImpl implements EventDictionaryService {
      * @param id Идентификатор записи для удаления.
      */
     @CacheEvict(value = "dictionaries", allEntries = true)
+    @Transactional
     @Override
     public void delete(Long id) {
+
+        var notificationTimes = notificationTimeRepository.findNotificationTimesByEventId(id);
+        var setId = notificationTimes.stream()
+                .map(NotificationTime::getNotification)
+                .map(Notification::getId)
+                .collect(Collectors.toSet());
+        notificationRepository.deleteAllById(setId);
+
         logger.info("EventDictionaryService: delete dictionary with id: " + id);
         eventDictionaryRepository.deleteById(id);
     }

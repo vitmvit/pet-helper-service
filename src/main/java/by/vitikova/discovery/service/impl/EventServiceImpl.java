@@ -4,8 +4,11 @@ import by.vitikova.discovery.EventDto;
 import by.vitikova.discovery.converter.EventConverter;
 import by.vitikova.discovery.create.EventCreateDto;
 import by.vitikova.discovery.exception.EntityNotFoundException;
+import by.vitikova.discovery.model.entity.Event;
+import by.vitikova.discovery.model.entity.NotificationTime;
 import by.vitikova.discovery.repository.EventDictionaryRepository;
 import by.vitikova.discovery.repository.EventRepository;
+import by.vitikova.discovery.repository.NotificationTimeRepository;
 import by.vitikova.discovery.service.EventService;
 import by.vitikova.discovery.update.EventUpdateDto;
 import lombok.AllArgsConstructor;
@@ -14,7 +17,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,6 +31,7 @@ public class EventServiceImpl implements EventService {
     private static final Logger logger = LoggerFactory.getLogger(EventServiceImpl.class);
     private EventRepository eventRepository;
     private EventDictionaryRepository eventDictionaryRepository;
+    private NotificationTimeRepository notificationTimeRepository;
     private EventConverter eventConverter;
 
     /**
@@ -73,6 +80,7 @@ public class EventServiceImpl implements EventService {
      * @return Объект EventDto, представляющий созданную запись.
      */
     @CacheEvict(value = "events", key = "#dto.dictionaryId")
+    @Transactional
     @Override
     public EventDto create(EventCreateDto dto) {
         logger.info("EventService: create event");
@@ -90,6 +98,7 @@ public class EventServiceImpl implements EventService {
      * @throws EntityNotFoundException если запись не найдена.
      */
     @CacheEvict(value = "events", key = "#dto.id")
+    @Transactional
     @Override
     public EventDto update(EventUpdateDto dto) {
         logger.info("EventService: update event with id: " + dto.getId());
@@ -99,13 +108,36 @@ public class EventServiceImpl implements EventService {
     }
 
     /**
+     * Удаляет запись по идентификатору дневника.
+     *
+     * @param id Идентификатор дневника для удаления.
+     */
+    @Transactional
+    @Override
+    public void deleteBeforeDateByDictionaryId(Long id) {
+        var eventList = eventRepository.findStateByDictionary_Id(id);
+        for (Event item : eventList) {
+            if (item.getDateCreated().isBefore(LocalDateTime.now())) {
+                if (!item.getDateCreated().toLocalDate().isEqual(LocalDate.now())) {
+                    eventRepository.deleteById(item.getId());
+                }
+            }
+        }
+    }
+
+    /**
      * Удаляет запись по идентификатору.
      *
      * @param id Идентификатор записи для удаления.
      */
+    @Transactional
     @CacheEvict(value = "events", allEntries = true)
     @Override
     public void delete(Long id) {
+        var notificationTimeList = notificationTimeRepository.findNotificationTimesByEventId(id);
+        for (NotificationTime item : notificationTimeList) {
+            notificationTimeRepository.deleteById(item.getId());
+        }
         logger.info("EventService: delete event with id: " + id);
         eventRepository.deleteById(id);
     }

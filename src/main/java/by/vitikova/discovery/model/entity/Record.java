@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDateTime;
 
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Entity
+@Audited
 @EntityListeners(RecordListener.class)
 public class Record extends LogModel {
 
@@ -52,4 +54,6 @@ public class Record extends LogModel {
     private String description;
 
     private boolean hasPedigree;
+
+    private boolean hasExhibition;
 }

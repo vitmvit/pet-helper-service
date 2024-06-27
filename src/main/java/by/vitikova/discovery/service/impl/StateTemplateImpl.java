@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,6 +63,7 @@ public class StateTemplateImpl implements StateTemplateService {
      * @return объект StateTemplateDto, соответствующий созданному шаблону состояния
      */
     @CacheEvict(value = "templates", key = "#dto.name")
+    @Transactional
     @Override
     public StateTemplateDto create(StateTemplateCreateDto dto) {
         logger.info("StateTemplateService: create state");
@@ -77,6 +79,7 @@ public class StateTemplateImpl implements StateTemplateService {
      * @throws EntityNotFoundException если шаблон состояния с указанным идентификатором не найден
      */
     @CacheEvict(value = "templates", key = "#dto.id")
+    @Transactional
     @Override
     public StateTemplateDto update(StateTemplateUpdateDto dto) {
         logger.info("StateTemplateService: update state with id: " + dto.getId());
@@ -91,6 +94,7 @@ public class StateTemplateImpl implements StateTemplateService {
      * @param id идентификатор шаблона состояния, который нужно удалить
      */
     @CacheEvict(value = "templates", allEntries = true)
+    @Transactional
     @Override
     public void delete(Long id) {
         logger.info("StateTemplateService: delete state with id: " + id);

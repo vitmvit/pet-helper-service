@@ -4,6 +4,10 @@ import by.vitikova.discovery.StateDictionaryDto;
 import by.vitikova.discovery.converter.StateDictionaryConverter;
 import by.vitikova.discovery.create.StateDictionaryCreateDto;
 import by.vitikova.discovery.exception.EntityNotFoundException;
+import by.vitikova.discovery.model.entity.Notification;
+import by.vitikova.discovery.model.entity.NotificationTime;
+import by.vitikova.discovery.repository.NotificationRepository;
+import by.vitikova.discovery.repository.NotificationTimeRepository;
 import by.vitikova.discovery.repository.StateDictionaryRepository;
 import by.vitikova.discovery.service.StateDictionaryService;
 import by.vitikova.discovery.update.StateDictionaryUpdateDto;
@@ -13,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +30,8 @@ public class StateDictionaryServiceImpl implements StateDictionaryService {
 
     private static final Logger logger = LoggerFactory.getLogger(RecordServiceImpl.class);
     private StateDictionaryRepository stateDictionaryRepository;
+    private NotificationTimeRepository notificationTimeRepository;
+    private NotificationRepository notificationRepository;
     private StateDictionaryConverter stateConverter;
 
     /**
@@ -74,6 +81,7 @@ public class StateDictionaryServiceImpl implements StateDictionaryService {
      * @return Объект StateDto, представляющий созданную запись.
      */
     @CacheEvict(value = "dictionaries", key = "#dto.recordId")
+    @Transactional
     @Override
     public StateDictionaryDto create(StateDictionaryCreateDto dto) {
         logger.info("StateDictionaryService: create dictionary");
@@ -93,6 +101,7 @@ public class StateDictionaryServiceImpl implements StateDictionaryService {
      * @throws EntityNotFoundException если запись не найдена.
      */
     @CacheEvict(value = "dictionaries", key = "#dto.id")
+    @Transactional
     @Override
     public StateDictionaryDto update(StateDictionaryUpdateDto dto) {
         logger.info("StateDictionaryService: update dictionary with id: " + dto.getId());
@@ -107,8 +116,16 @@ public class StateDictionaryServiceImpl implements StateDictionaryService {
      * @param id Идентификатор записи для удаления.
      */
     @CacheEvict(value = "dictionaries", allEntries = true)
+    @Transactional
     @Override
     public void delete(Long id) {
+        var notificationTimes = notificationTimeRepository.findNotificationTimesByStateId(id);
+        var setId = notificationTimes.stream()
+                .map(NotificationTime::getNotification)
+                .map(Notification::getId)
+                .collect(Collectors.toSet());
+        notificationRepository.deleteAllById(setId);
+
         logger.info("StateDictionaryService: delete dictionary with id: " + id);
         stateDictionaryRepository.deleteById(id);
     }

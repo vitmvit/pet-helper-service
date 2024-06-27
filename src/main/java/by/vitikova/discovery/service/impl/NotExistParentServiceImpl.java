@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,6 +63,7 @@ public class NotExistParentServiceImpl implements NotExistParentService {
      * @return объект NotExistParentDto, соответствующий созданному NotExistParent
      */
     @CacheEvict(value = "parents", key = "#dto.name")
+    @Transactional
     @Override
     public NotExistParentDto create(NotExistParentCreateDto dto) {
         logger.info("NotExistParentService: create parent");
@@ -77,6 +79,7 @@ public class NotExistParentServiceImpl implements NotExistParentService {
      * @throws EntityNotFoundException если объект NotExistParent не найден
      */
     @CacheEvict(value = "parents", key = "#dto.id")
+    @Transactional
     @Override
     public NotExistParentDto update(NotExistParentUpdateDto dto) {
         logger.info("NotExistParentService: update parent");
@@ -92,6 +95,7 @@ public class NotExistParentServiceImpl implements NotExistParentService {
      * @param id идентификатор объекта NotExistParent, который нужно удалить
      */
     @CacheEvict(value = "parents", allEntries = true)
+    @Transactional
     @Override
     public void delete(Long id) {
         logger.info("NotExistParentService: delete parent with id: " + id);
