@@ -38,9 +38,9 @@ public interface NotExistParentConverter {
     /**
      * Обновление полей объекта NotExistParent на основе данных из NotExistParentUpdateDto.
      *
-     * @param record объект NotExistParent, который нужно обновить
-     * @param dto    объект NotExistParentUpdateDto с обновленными данными
+     * @param notExistParent объект NotExistParent, который нужно обновить
+     * @param dto            объект NotExistParentUpdateDto с обновленными данными
      * @return обновленный объект NotExistParent
      */
-    NotExistParent merge(@MappingTarget NotExistParent record, NotExistParentUpdateDto dto);
+    NotExistParent merge(@MappingTarget NotExistParent notExistParent, NotExistParentUpdateDto dto);
 }

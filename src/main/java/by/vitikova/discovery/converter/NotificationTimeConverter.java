@@ -4,9 +4,7 @@ import by.vitikova.discovery.NotificationTimeDto;
 import by.vitikova.discovery.create.NotificationTimeCreateDto;
 import by.vitikova.discovery.model.entity.NotificationTime;
 import by.vitikova.discovery.update.NotificationTimeUpdateDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 
@@ -18,6 +16,15 @@ public interface NotificationTimeConverter {
      * @param source исходный объект NotificationTime
      * @return преобразованный объект NotificationTimeDto
      */
+    @Mappings({
+            @Mapping(target = "id", source = "id"),
+            @Mapping(target = "notificationId", source = "source.notification.id"),
+            @Mapping(target = "time", source = "time"),
+            @Mapping(target = "date", source = "date"),
+            @Mapping(target = "recordId", source = "recordId"),
+            @Mapping(target = "eventId", source = "eventId"),
+            @Mapping(target = "stateId", source = "stateId")
+    })
     NotificationTimeDto convert(NotificationTime source);
 
     /**
@@ -39,9 +46,9 @@ public interface NotificationTimeConverter {
     /**
      * Обновление полей объекта NotificationTime на основе данных из NotificationTimeUpdateDto.
      *
-     * @param record объект NotificationTime, который нужно обновить
-     * @param dto    объект NotificationTimeUpdateDto с обновленными данными
+     * @param notificationTime объект NotificationTime, который нужно обновить
+     * @param dto              объект NotificationTimeUpdateDto с обновленными данными
      * @return обновленный объект NotificationTime
      */
-    NotificationTime merge(@MappingTarget NotificationTime record, NotificationTimeUpdateDto dto);
+    NotificationTime merge(@MappingTarget NotificationTime notificationTime, NotificationTimeUpdateDto dto);
 }

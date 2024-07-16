@@ -40,6 +40,12 @@ public class FavoriteArticleServiceImpl implements FavoriteArticleService {
         return favoriteArticleConverter.convert(favoriteArticleRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
+    /**
+     * Возвращает избранную статью по идентификатору статьи.
+     *
+     * @param id идентификатор статьи
+     * @return избранная статья
+     */
     @Override
     public FavoriteArticleDto findByArticleId(Long id) {
         logger.info("FavoriteArticleService: find favorite article with id: " + id);
@@ -47,6 +53,12 @@ public class FavoriteArticleServiceImpl implements FavoriteArticleService {
 
     }
 
+    /**
+     * Возвращает список избранных статей для заданного пользователя.
+     *
+     * @param name имя пользователя
+     * @return список избранных статей
+     */
     @Override
     public List<FavoriteArticleDto> findByUserLogin(String name) {
         logger.info("FavoriteArticleService: find favorite articles with user name: " + name);
@@ -66,7 +78,6 @@ public class FavoriteArticleServiceImpl implements FavoriteArticleService {
         var favoriteArticleList = favoriteArticleRepository.findAll();
         return favoriteArticleList.stream().map(favoriteArticleConverter::convert).collect(Collectors.toList());
     }
-
 
     /**
      * Создает новую запись.

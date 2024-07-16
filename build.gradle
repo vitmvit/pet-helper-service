@@ -19,7 +19,6 @@ dependencies {
     implementation "by.vitikova.discovery:exception-error-handler-spring-boot-starter:2.0"
 
     implementation "org.postgresql:postgresql:42.6.0"
-    implementation "org.liquibase:liquibase-core:4.25.1"
 
     implementation 'org.hibernate.orm:hibernate-envers:6.5.2.Final'
     implementation "org.springframework.boot:spring-boot-starter-data-jpa:3.2.1"
@@ -27,6 +26,7 @@ dependencies {
     implementation "org.springframework.cloud:spring-cloud-config-client:4.1.0"
     implementation "org.springframework.cloud:spring-cloud-starter-openfeign:4.1.0"
     implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.security:spring-security-oauth2-client:6.3.1'
     implementation "org.springframework.boot:spring-boot-starter-validation"
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'

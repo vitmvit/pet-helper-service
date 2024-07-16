@@ -1,18 +1,16 @@
 package by.vitikova.discovery.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.envers.Audited;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 @Entity
+@Setter
+@Getter
+@Builder
 @Audited
+@NoArgsConstructor
+@AllArgsConstructor
 public class Pedigree {
 
     @Id

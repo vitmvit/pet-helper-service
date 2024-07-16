@@ -4,9 +4,7 @@ import by.vitikova.discovery.EventDto;
 import by.vitikova.discovery.create.EventCreateDto;
 import by.vitikova.discovery.model.entity.Event;
 import by.vitikova.discovery.update.EventUpdateDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 
@@ -18,6 +16,13 @@ public interface EventConverter {
      * @param source исходный объект Event
      * @return преобразованный объект EventDto
      */
+    @Mappings({
+            @Mapping(target = "id", source = "id"),
+            @Mapping(target = "textColor", source = "textColor"),
+            @Mapping(target = "description", source = "description"),
+            @Mapping(target = "dateCreated", source = "dateCreated"),
+            @Mapping(target = "dictionaryId", source = "source.dictionary.id")
+    })
     EventDto convert(Event source);
 
     /**
@@ -39,9 +44,9 @@ public interface EventConverter {
     /**
      * Обновление полей объекта Event на основе данных из EventUpdateDto.
      *
-     * @param record объект Event, который нужно обновить
-     * @param dto    объект EventUpdateDto с обновленными данными
+     * @param event объект Event, который нужно обновить
+     * @param dto   объект EventUpdateDto с обновленными данными
      * @return обновленный объект Event
      */
-    Event merge(@MappingTarget Event record, EventUpdateDto dto);
+    Event merge(@MappingTarget Event event, EventUpdateDto dto);
 }

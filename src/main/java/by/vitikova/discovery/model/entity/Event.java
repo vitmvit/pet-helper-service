@@ -1,20 +1,18 @@
 package by.vitikova.discovery.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.envers.Audited;
 
 import java.time.LocalDateTime;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
+@Setter
+@Getter
 @Builder
 @Audited
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Event {
 
     @Id

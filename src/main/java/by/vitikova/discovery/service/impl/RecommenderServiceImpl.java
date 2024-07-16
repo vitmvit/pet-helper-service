@@ -2,7 +2,12 @@ package by.vitikova.discovery.service.impl;
 
 import by.vitikova.discovery.*;
 import by.vitikova.discovery.constant.ArticleStatus;
-import by.vitikova.discovery.service.*;
+import by.vitikova.discovery.feign.ArticleClient;
+import by.vitikova.discovery.feign.TagClient;
+import by.vitikova.discovery.service.EventDictionaryService;
+import by.vitikova.discovery.service.RecommenderService;
+import by.vitikova.discovery.service.RecordService;
+import by.vitikova.discovery.service.StateDictionaryService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,8 +27,8 @@ public class RecommenderServiceImpl implements RecommenderService {
 
     private RecordService recordRepository;
     private StateDictionaryService stateDictionaryRepository;
-    private ArticleService articleService;
-    private TagService tagService;
+    private ArticleClient articleClient;
+    private TagClient tagService;
     private EventDictionaryService eventDictionaryRepository;
 
     private Set<String> getTags(String userLogin) {
@@ -61,14 +66,14 @@ public class RecommenderServiceImpl implements RecommenderService {
     }
 
     public List<ArticleDto> getArticle(String userLogin) {
-        var articleList = articleService.findAllByStatus(ArticleStatus.FINISHED);
+        var articleList = articleClient.findAllByStatus(ArticleStatus.FINISHED).getBody();
         Set<String> tagSet = getTags(userLogin);
         tagSet.add(GENERAL_TAG);
 
         // Оценить релевантность статей
         Map<ArticleDto, Integer> articleRelevanceMap = new HashMap<>();
         for (ArticleDto article : articleList) {
-            Set<String> articleTags = tagService.findByArticleId(article.getId()).stream().map(TagDto::getName).collect(Collectors.toSet());
+            Set<String> articleTags = tagService.findByArticleId(article.getId()).getBody().stream().map(TagDto::getName).collect(Collectors.toSet());
             articleTags.add(GENERAL_TAG);
             int relevanceScore = calculateRelevanceScore(tagSet, articleTags);
             articleRelevanceMap.put(article, relevanceScore);

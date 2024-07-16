@@ -40,17 +40,17 @@ public class EventDictionaryController {
     }
 
     @PostMapping
-    public ResponseEntity<EventDictionaryDto> create(@RequestBody EventDictionaryCreateDto stateDictionaryCreateDto) {
+    public ResponseEntity<EventDictionaryDto> create(@RequestBody EventDictionaryCreateDto eventDictionaryCreateDto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(eventDictionaryService.create(stateDictionaryCreateDto));
+                .body(eventDictionaryService.create(eventDictionaryCreateDto));
     }
 
     @PutMapping
-    public ResponseEntity<EventDictionaryDto> update(@RequestBody EventDictionaryUpdateDto stateDictionaryUpdateDto) {
+    public ResponseEntity<EventDictionaryDto> update(@RequestBody EventDictionaryUpdateDto eventDictionaryUpdateDto) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(eventDictionaryService.update(stateDictionaryUpdateDto));
+                .body(eventDictionaryService.update(eventDictionaryUpdateDto));
     }
 
     @DeleteMapping("/{id}")

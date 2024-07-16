@@ -4,11 +4,39 @@
 
 Данный микросервис предоставляет функционал для работы мобильной частью приложения PetHelper.
 
+Сюда входят:
+
+- эвенты;
+- дневники эвентов;
+- состояния;
+- дневники состояний;
+- сохраненные статьи;
+- записи родословной;
+- заглушки записей родословной;
+- звонки;
+- расписпние звонка;
+- записи питомцев;
+- список статей к просмотру.
+
+При каждом запросе необходимо передавать токен в заголовках.
+
+## Доступ
+
+Роли:
+
+- USER
+
 ## Swagger
 
 http://localhost:8085/api/doc/swagger-ui/index.html#/
 
-## StateController (8081/api/v1/states)
+## Порт
+
+```text
+8085
+```
+
+## StateController
 
 Контроллер поддерживает следующие операции:
 
@@ -26,18 +54,18 @@ http://localhost:8085/api/doc/swagger-ui/index.html#/
 Request:
 
 ```http request
-http://localhost:8085/api/v1/states/29
+http://localhost:8085/api/v1/states/55
 ```
 
 Response:
 
 ```json
 {
-  "id": 29,
-  "dictionaryId": 21,
-  "value": 65,
-  "description": "desc",
-  "dateCreated": "2024-05-06T10:12:59.803"
+  "id": 55,
+  "dictionaryId": 35,
+  "value": 5.0,
+  "description": "здоров",
+  "dateCreated": "2024-05-20T08:49:10.74"
 }
 ```
 
@@ -55,7 +83,7 @@ Error:
 Request:
 
 ```http request
-http://localhost:8085/api/v1/states/dict/21
+http://localhost:8085/api/v1/states/dict/44
 ```
 
 Response:
@@ -63,25 +91,25 @@ Response:
 ```json
 [
   {
-    "id": 30,
-    "dictionaryId": 21,
-    "value": 65,
-    "description": "66",
-    "dateCreated": "2024-05-06T10:12:59.803"
+    "id": 68,
+    "dictionaryId": 44,
+    "value": 0.9,
+    "description": "много ест",
+    "dateCreated": "2024-05-29T06:30:38.576"
   },
   {
-    "id": 31,
-    "dictionaryId": null,
-    "value": 76,
-    "description": "",
-    "dateCreated": "2024-05-06T10:13:07.823"
+    "id": 69,
+    "dictionaryId": 44,
+    "value": 0.1,
+    "description": null,
+    "dateCreated": "2024-03-12T06:31:00"
   },
   {
-    "id": 32,
-    "dictionaryId": null,
-    "value": 45,
-    "description": "",
-    "dateCreated": "2024-05-06T10:13:16.06"
+    "id": 70,
+    "dictionaryId": 44,
+    "value": 0.4,
+    "description": null,
+    "dateCreated": "2024-04-10T06:31:00"
   }
 ]
 ```
@@ -99,26 +127,20 @@ Response:
 ```json
 [
   {
-    "id": 30,
-    "dictionaryId": 21,
-    "value": 65,
-    "description": "66",
-    "dateCreated": "2024-05-06T10:12:59.803"
+    "id": 55,
+    "dictionaryId": 35,
+    "value": 5.0,
+    "description": "здоров",
+    "dateCreated": "2024-05-20T08:49:10.74"
   },
   {
-    "id": 31,
-    "dictionaryId": null,
-    "value": 76,
-    "description": "",
-    "dateCreated": "2024-05-06T10:13:07.823"
+    "id": 59,
+    "dictionaryId": 41,
+    "value": 3.0,
+    "description": "здоров",
+    "dateCreated": "2024-05-25T16:38:14.144"
   },
-  {
-    "id": 32,
-    "dictionaryId": null,
-    "value": 45,
-    "description": "",
-    "dateCreated": "2024-05-06T10:13:16.06"
-  }
+  ...
 ]
 ```
 
@@ -157,7 +179,7 @@ Response:
 
 ### PUT-запросы:
 
-#### StateDtoupdate(@RequestBody StateUpdateDto stateUpdateDto)
+#### StateDtoUpdate(@RequestBody StateUpdateDto stateUpdateDto)
 
 Request:
 
@@ -169,11 +191,11 @@ Body:
 
 ```json
 {
-  "dictionaryId": 21,
-  "value": 33,
+  "id": 79,
+  "dictionaryId": 44,
+  "value": 35.0,
   "description": "string",
-  "dateCreated": "2024-05-06T10:18:09.110Z",
-  "id": 31
+  "dateCreated": "2024-05-06T10:16:38.441"
 }
 ```
 
@@ -181,11 +203,11 @@ Response:
 
 ```json
 {
-  "id": 31,
-  "dictionaryId": null,
-  "value": 33,
+  "id": 79,
+  "dictionaryId": 44,
+  "value": 35.0,
   "description": "string",
-  "dateCreated": "2024-05-06T10:18:09.11"
+  "dateCreated": "2024-05-06T10:16:38.441"
 }
 ```
 
@@ -195,149 +217,7 @@ Response:
 
 - delete(@PathVariable("id") Long id)
 
-## StateTemplateController (8081/api/v1/stateTemplates)
-
-Контроллер поддерживает следующие операции:
-
-- поиск записи состояния по id
-- просмотр всех записей состояния
-- создание записи
-- обновление записи
-- удаление записи по id
-
-### GET-запросы:
-
-#### StateTemplateDto findById(@PathVariable("id") Long id)
-
-Request:
-
-```http request
-http://localhost:8085/api/v1/stateTemplates/1
-```
-
-Response:
-
-```json
-{
-  "id": 1,
-  "name": "Температура",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget arcu nec mauris blandit convallis.",
-  "uuidImage": "26b999fe-a099-4185-a203-840d3dc26eed"
-}
-```
-
-Error:
-
-```json
-{
-  "errorMessage": "Entity not found!",
-  "errorCode": 404
-}
-```
-
-#### List<StateTemplateDto> findAll()
-
-Request:
-
-```http request
-http://localhost:8085/api/v1/stateTemplates
-```
-
-Response:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Температура",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget arcu nec mauris blandit convallis.",
-    "uuidImage": "26b999fe-a099-4185-a203-840d3dc26eed"
-  },
-  {
-    "id": 2,
-    "name": "Вес",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget arcu nec mauris blandit convallis.",
-    "uuidImage": "ae89b38d-2953-4a57-9878-68361043e151"
-  },
-  {
-    "id": 3,
-    "name": "Рост",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget arcu nec mauris blandit convallis.",
-    "uuidImage": "ec164f6c-2882-4e71-b9bf-95075e267c6a"
-  }
-]
-```
-
-### POST-запросы:
-
-#### StateTemplateDto create(@RequestBody StateTemplateCreateDto stateCreateDto)
-
-Request:
-
-```http request
-http://localhost:8085/api/v1/stateTemplates
-```
-
-Body:
-
-```json
-{
-  "name": "Температура2",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget arcu nec mauris blandit convallis.",
-  "uuidImage": "26b999fe-a099-4185-a203-840d3dc26eed"
-}
-```
-
-Response:
-
-```json
-{
-  "id": 4,
-  "name": "Температура2",
-  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget arcu nec mauris blandit convallis.",
-  "uuidImage": "26b999fe-a099-4185-a203-840d3dc26eed"
-}
-```
-
-### PUT-запросы:
-
-#### StateDtoupdate(@RequestBody StateUpdateDto stateUpdateDto)
-
-Request:
-
-```http request
-http://localhost:8085/api/v1/stateTemplates
-```
-
-Body:
-
-```json
-{
-  "name": "string",
-  "description": "string",
-  "uuidImage": "string",
-  "id": 4
-}
-```
-
-Response:
-
-```json
-{
-  "id": 4,
-  "name": "string",
-  "description": "string",
-  "uuidImage": "string"
-}
-```
-
-### DELETE-запросы:
-
-Не возвращают ничего:
-
-- delete(@PathVariable("id") Long id)
-
-## StateDictionaryController (8081/api/v1/stateTemplates)
+## StateDictionaryController
 
 Контроллер поддерживает следующие операции:
 
@@ -355,21 +235,20 @@ Response:
 Request:
 
 ```http request
-http://localhost:8085/api/v1/dictionaries/3
+http://localhost:8085/api/v1/dictionaries/36
 ```
 
 Response:
 
 ```json
 {
-  "id": 3,
-  "recordId": 10,
-  "name": "state_dict_3",
-  "uuid": "26b999fe-a099-4185-a203-840d3dc26eed",
-  "description": null,
-  "dateCreated": "2024-04-30T17:59:41.13576",
-  "active": true,
-  "constant": false
+  "id": 36,
+  "recordId": 23,
+  "name": "Температура",
+  "uuid": "4407c266-1eaa-4377-bebb-8e92be818525",
+  "description": "Температура",
+  "dateCreated": "2024-05-21T14:23:51.689583",
+  "active": true
 }
 ```
 
@@ -387,7 +266,7 @@ Error:
 Request:
 
 ```http request
-http://localhost:8085/api/v1/dictionaries/recordId/10
+http://localhost:8085/api/v1/dictionaries/recordId/23
 ```
 
 Response:
@@ -395,25 +274,15 @@ Response:
 ```json
 [
   {
-    "id": 3,
-    "recordId": 10,
-    "name": "state_dict_3",
-    "uuid": "26b999fe-a099-4185-a203-840d3dc26eed",
-    "description": null,
-    "dateCreated": "2024-04-30T17:59:41.13576",
-    "active": true,
-    "constant": false
+    "id": 36,
+    "recordId": 23,
+    "name": "Температура",
+    "uuid": "4407c266-1eaa-4377-bebb-8e92be818525",
+    "description": "Температура",
+    "dateCreated": "2024-05-21T14:23:51.689583",
+    "active": true
   },
-  {
-    "id": 16,
-    "recordId": 10,
-    "name": "Вес",
-    "uuid": "26b999fe-a099-4185-a203-840d3dc26eed",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget arcu nec mauris blandit convallis.",
-    "dateCreated": "2024-05-04T13:56:09.543726",
-    "active": true,
-    "constant": false
-  }
+  ...
 ]
 ```
 
@@ -430,25 +299,33 @@ Response:
 ```json
 [
   {
-    "id": 3,
-    "recordId": 10,
-    "name": "state_dict_3",
-    "uuid": "26b999fe-a099-4185-a203-840d3dc26eed",
-    "description": null,
-    "dateCreated": "2024-04-30T17:59:41.13576",
-    "active": true,
-    "constant": false
+    "id": 36,
+    "recordId": 23,
+    "name": "Температура",
+    "uuid": "4407c266-1eaa-4377-bebb-8e92be818525",
+    "description": "Температура",
+    "dateCreated": "2024-05-21T14:23:51.689583",
+    "active": true
   },
   {
-    "id": 16,
-    "recordId": 10,
-    "name": "Вес",
-    "uuid": "26b999fe-a099-4185-a203-840d3dc26eed",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget arcu nec mauris blandit convallis.",
-    "dateCreated": "2024-05-04T13:56:09.543726",
-    "active": true,
-    "constant": false
-  }
+    "id": 35,
+    "recordId": 34,
+    "name": "вес",
+    "uuid": "ebaca5c3-b383-43a2-a006-240e722b9855",
+    "description": null,
+    "dateCreated": "2024-05-20T11:49:04.282653",
+    "active": true
+  },
+  {
+    "id": 41,
+    "recordId": 34,
+    "name": "Назаз",
+    "uuid": "ebaca5c3-b383-43a2-a006-240e722b9855",
+    "description": null,
+    "dateCreated": "2024-05-25T19:34:54.973676",
+    "active": true
+  },
+  ...
 ]
 ```
 
@@ -477,14 +354,13 @@ Response:
 
 ```json
 {
-  "id": 20,
+  "id": 49,
   "recordId": 10,
   "name": "string",
   "uuid": "00000000-0000-0000-000000000000",
   "description": "string",
-  "dateCreated": "2024-05-06T13:04:27.92353",
-  "active": true,
-  "constant": false
+  "dateCreated": "2024-07-16T13:50:27.368975",
+  "active": true
 }
 ```
 
@@ -502,11 +378,11 @@ Body:
 
 ```json
 {
+  "id": 49,
   "recordId": 10,
-  "name": "string",
-  "description": "string",
+  "name": "string1",
+  "description": "string1",
   "uuid": "00000000-0000-0000-000000000000",
-  "id": 20,
   "active": true
 }
 ```
@@ -515,14 +391,13 @@ Response:
 
 ```json
 {
-  "id": 20,
+  "id": 49,
   "recordId": 10,
-  "name": "string",
+  "name": "string1",
   "uuid": "00000000-0000-0000-000000000000",
-  "description": "string",
-  "dateCreated": "2024-05-06T13:04:27.92353",
-  "active": true,
-  "constant": false
+  "description": "string1",
+  "dateCreated": "2024-07-16T13:50:27.368975",
+  "active": true
 }
 ```
 
@@ -532,7 +407,7 @@ Response:
 
 - delete(@PathVariable("id") Long id)
 
-## RecordController (8085/api/v1/records)
+## RecordController
 
 Контроллер поддерживает следующие операции:
 
@@ -551,24 +426,27 @@ Response:
 Request:
 
 ```http request
-http://localhost:8085/api/v1/records/5
+http://localhost:8085/api/v1/records/61
 ```
 
 Response:
 
 ```json
 {
-  "id": 5,
-  "createDate": "2024-04-15T12:11:42.859605",
-  "updateDate": "2024-04-19T14:24:48.566219",
-  "userLogin": "user1@mail.com",
-  "name": "Кошка",
-  "uuidAvatar": "4c472274-1c31-4e83-bfe4-0827d9dd0adb",
-  "dataBirthday": "2011-04-19T14:23:00",
-  "fullName": "Кошка",
-  "sex": "FEMALE",
-  "description": "Что-то с персом",
-  "hasPedigree": false
+  "id": 61,
+  "createDate": "2024-05-29T08:58:57.895254",
+  "updateDate": "2024-05-29T08:59:13.321722",
+  "userLogin": "maria@mail.com",
+  "name": "Жорик",
+  "breed": "Мопс",
+  "animalType": "Собака",
+  "uuidAvatar": "5a1f765d-10b6-464a-ac8e-08eeb96e51da",
+  "dataBirthday": "2021-05-02T08:58:00",
+  "fullName": null,
+  "sex": "MALE",
+  "description": "Ест все что найдет, не перекармливать",
+  "hasPedigree": false,
+  "hasExhibition": false
 }
 ```
 
@@ -594,57 +472,70 @@ Response:
 ```json
 [
   {
-    "id": 27,
-    "createDate": "2024-04-19T11:38:11.116022",
-    "updateDate": "2024-04-19T14:38:31.144034",
-    "userLogin": "user1@mail.com",
-    "name": "No name",
-    "uuidAvatar": "00000000-0000-0000-0000-000000000000",
-    "dataBirthday": null,
-    "fullName": null,
-    "sex": null,
-    "description": null,
-    "hasPedigree": false
-  },
-  {
-    "id": 7,
-    "createDate": "2024-04-15T12:12:22.630946",
-    "updateDate": "2024-04-19T14:06:17.18275",
-    "userLogin": "user1@mail.com",
-    "name": "Женя",
-    "uuidAvatar": "f1996e19-fb0d-4bd7-b86f-90a914be24fe",
-    "dataBirthday": "2018-05-02T13:36:00",
-    "fullName": "Женя Марьевна",
-    "sex": "FEMALE",
-    "description": "Черепаха красноухая",
-    "hasPedigree": false
-  },
-  {
-    "id": 28,
-    "createDate": "2024-04-19T11:41:31.552262",
-    "updateDate": "2024-04-19T14:11:20.288582",
-    "userLogin": "user1@mail.com",
-    "name": "Аквариум",
-    "uuidAvatar": "a0a8c41e-fb4e-4245-8b1a-40e9d10563de",
-    "dataBirthday": null,
-    "fullName": null,
-    "sex": null,
-    "description": null,
-    "hasPedigree": false
-  },
-  {
-    "id": 5,
-    "createDate": "2024-04-15T12:11:42.859605",
-    "updateDate": "2024-04-19T14:24:48.566219",
+    "id": 24,
+    "createDate": "2024-05-12T23:58:05.313376",
+    "updateDate": "2024-05-12T23:59:40.515251",
     "userLogin": "user1@mail.com",
     "name": "Кошка",
-    "uuidAvatar": "4c472274-1c31-4e83-bfe4-0827d9dd0adb",
-    "dataBirthday": "2011-04-19T14:23:00",
-    "fullName": "Кошка",
+    "breed": null,
+    "animalType": "Млекопитающее",
+    "uuidAvatar": "5bdc7dba-9dd5-4b22-a0db-d9be164c65f9",
+    "dataBirthday": null,
+    "fullName": null,
     "sex": "FEMALE",
     "description": "Что-то с персом",
-    "hasPedigree": false
-  }
+    "hasPedigree": false,
+    "hasExhibition": false
+  },
+  {
+    "id": 25,
+    "createDate": "2024-05-13T00:00:51.690816",
+    "updateDate": "2024-05-13T00:01:02.952046",
+    "userLogin": "user1@mail.com",
+    "name": "ЧереПашка",
+    "breed": null,
+    "animalType": "Рептилия",
+    "uuidAvatar": "6c878bad-e724-4f7a-b55c-986e58384e64",
+    "dataBirthday": "2020-05-12T00:00:00",
+    "fullName": null,
+    "sex": "FEMALE",
+    "description": "Нашли в лесу",
+    "hasPedigree": true,
+    "hasExhibition": false
+  },
+  {
+    "id": 31,
+    "createDate": "2024-05-16T11:15:17.79257",
+    "updateDate": "2024-05-17T17:13:52.652949",
+    "userLogin": "user1@mail.com",
+    "name": "j[;o",
+    "breed": "Леопардовый геккон",
+    "animalType": "Рептилия",
+    "uuidAvatar": "86999f04-814e-4ed6-ab65-33f0e5a4dc7c",
+    "dataBirthday": null,
+    "fullName": null,
+    "sex": null,
+    "description": null,
+    "hasPedigree": false,
+    "hasExhibition": false
+  },
+  {
+    "id": 23,
+    "createDate": "2024-05-12T23:35:22.312014",
+    "updateDate": "2024-06-16T13:40:54.429926",
+    "userLogin": "user1@mail.com",
+    "name": "Женя",
+    "breed": null,
+    "animalType": "Рептилия",
+    "uuidAvatar": "b40606e3-7786-4a60-b4d1-965b3618c75a",
+    "dataBirthday": null,
+    "fullName": null,
+    "sex": "MALE",
+    "description": "Красноухая черепаха",
+    "hasPedigree": false,
+    "hasExhibition": true
+  },
+  ...
 ]
 ```
 
@@ -661,57 +552,38 @@ Response:
 ```json
 [
   {
-    "id": 27,
-    "createDate": "2024-04-19T11:38:11.116022",
-    "updateDate": "2024-04-19T14:38:31.144034",
-    "userLogin": "user1@mail.com",
-    "name": "No name",
-    "uuidAvatar": "00000000-0000-0000-0000-000000000000",
-    "dataBirthday": null,
+    "id": 61,
+    "createDate": "2024-05-29T08:58:57.895254",
+    "updateDate": "2024-05-29T08:59:13.321722",
+    "userLogin": "maria@mail.com",
+    "name": "Жорик",
+    "breed": "Мопс",
+    "animalType": "Собака",
+    "uuidAvatar": "5a1f765d-10b6-464a-ac8e-08eeb96e51da",
+    "dataBirthday": "2021-05-02T08:58:00",
     "fullName": null,
-    "sex": null,
-    "description": null,
-    "hasPedigree": false
+    "sex": "MALE",
+    "description": "Ест все что найдет, не перекармливать",
+    "hasPedigree": false,
+    "hasExhibition": false
   },
   {
-    "id": 7,
-    "createDate": "2024-04-15T12:12:22.630946",
-    "updateDate": "2024-04-19T14:06:17.18275",
-    "userLogin": "user1@mail.com",
-    "name": "Женя",
-    "uuidAvatar": "f1996e19-fb0d-4bd7-b86f-90a914be24fe",
-    "dataBirthday": "2018-05-02T13:36:00",
-    "fullName": "Женя Марьевна",
-    "sex": "FEMALE",
-    "description": "Черепаха красноухая",
-    "hasPedigree": false
-  },
-  {
-    "id": 28,
-    "createDate": "2024-04-19T11:41:31.552262",
-    "updateDate": "2024-04-19T14:11:20.288582",
-    "userLogin": "user1@mail.com",
-    "name": "Аквариум",
-    "uuidAvatar": "a0a8c41e-fb4e-4245-8b1a-40e9d10563de",
-    "dataBirthday": null,
-    "fullName": null,
-    "sex": null,
-    "description": null,
-    "hasPedigree": false
-  },
-  {
-    "id": 5,
-    "createDate": "2024-04-15T12:11:42.859605",
-    "updateDate": "2024-04-19T14:24:48.566219",
+    "id": 24,
+    "createDate": "2024-05-12T23:58:05.313376",
+    "updateDate": "2024-05-12T23:59:40.515251",
     "userLogin": "user1@mail.com",
     "name": "Кошка",
-    "uuidAvatar": "4c472274-1c31-4e83-bfe4-0827d9dd0adb",
-    "dataBirthday": "2011-04-19T14:23:00",
-    "fullName": "Кошка",
+    "breed": null,
+    "animalType": "Млекопитающее",
+    "uuidAvatar": "5bdc7dba-9dd5-4b22-a0db-d9be164c65f9",
+    "dataBirthday": null,
+    "fullName": null,
     "sex": "FEMALE",
     "description": "Что-то с персом",
-    "hasPedigree": false
-  }
+    "hasPedigree": false,
+    "hasExhibition": false
+  },
+  ...
 ]
 ```
 
@@ -743,17 +615,20 @@ Response:
 
 ```json
 {
-  "id": 31,
-  "createDate": "2024-04-19T17:41:08.972896",
-  "updateDate": "2024-04-19T17:41:08.976085",
+  "id": 68,
+  "createDate": "2024-07-16T13:55:03.177695",
+  "updateDate": "2024-07-16T13:55:03.177774",
   "userLogin": "user1@mail.com",
   "name": "pet",
+  "breed": null,
+  "animalType": null,
   "uuidAvatar": "00000000-0000-0000-0000-000000000000",
   "dataBirthday": "2024-04-02T22:33:18.722023",
   "fullName": "pet",
   "sex": "MALE",
   "description": "description",
-  "hasPedigree": false
+  "hasPedigree": false,
+  "hasExhibition": false
 }
 ```
 
@@ -764,24 +639,27 @@ Response:
 Request:
 
 ```http request
-http://localhost:8085/api/v1/records/avatar/31/00000000-0000-0000-0000-000000000000
+http://localhost:8085/api/v1/records/avatar/68/00000000-0000-0000-0000-000000000000
 ```
 
 Response:
 
 ```json
 {
-  "id": 31,
-  "createDate": "2024-04-19T17:41:08.972896",
-  "updateDate": "2024-04-19T17:41:08.976085",
+  "id": 68,
+  "createDate": "2024-07-16T13:55:03.177695",
+  "updateDate": "2024-07-16T13:55:03.177774",
   "userLogin": "user1@mail.com",
   "name": "pet",
+  "breed": null,
+  "animalType": null,
   "uuidAvatar": "00000000-0000-0000-0000-000000000000",
   "dataBirthday": "2024-04-02T22:33:18.722023",
   "fullName": "pet",
   "sex": "MALE",
   "description": "description",
-  "hasPedigree": false
+  "hasPedigree": false,
+  "hasExhibition": false
 }
 ```
 
@@ -790,7 +668,7 @@ Response:
 Request:
 
 ```http request
-http://localhost:8081/api/v1/users/support1@mail.com
+http://localhost:8085/api/v1/records
 ```
 
 Body:
@@ -800,7 +678,7 @@ Body:
   "id": 31,
   "userLogin": "user1@mail.com",
   "name": "pet",
-  "uuidAvatar": "00000000-0000-0000-0000-000000000000",
+  "uuidAvatar": "00000000-0000-0000-0000-000000000001",
   "dataBirthday": "2024-04-02T22:33:18.722023",
   "fullName": "pet",
   "sex": "MALE",
@@ -814,16 +692,19 @@ Response:
 ```json
 {
   "id": 31,
-  "createDate": "2024-04-19T17:41:08.972896",
-  "updateDate": "2024-04-19T17:41:08.976085",
+  "createDate": "2024-05-16T11:15:17.79257",
+  "updateDate": "2024-07-16T13:55:40.751889",
   "userLogin": "user1@mail.com",
   "name": "pet",
-  "uuidAvatar": "00000000-0000-0000-0000-000000000000",
+  "breed": null,
+  "animalType": null,
+  "uuidAvatar": "00000000-0000-0000-0000-000000000001",
   "dataBirthday": "2024-04-02T22:33:18.722023",
   "fullName": "pet",
   "sex": "MALE",
   "description": "description",
-  "hasPedigree": false
+  "hasPedigree": false,
+  "hasExhibition": false
 }
 ```
 
@@ -833,7 +714,7 @@ Response:
 
 - delete(@PathVariable("id") Long id)
 
-## NotExistParentController ()
+## NotExistParentController
 
 Контроллер поддерживает следующие операции:
 
@@ -850,17 +731,17 @@ Response:
 Request:
 
 ```http request
-http://localhost:8085/api/v1/parents/11
+http://localhost:8085/api/v1/parents/28
 ```
 
 Response:
 
 ```json
 {
-  "id": 11,
-  "name": "name",
-  "sex": "FEMALI",
-  "description": "desc"
+  "id": 28,
+  "name": "Оладка",
+  "sex": "самка",
+  "description": "Из московского питомника"
 }
 ```
 
@@ -886,23 +767,18 @@ Response:
 ```json
 [
   {
-    "id": 12,
-    "name": "name1",
-    "sex": "FEMALE",
-    "description": "d"
+    "id": 20,
+    "name": "ЧереПрадед",
+    "sex": "самец",
+    "description": "из Африки"
   },
   {
-    "id": 13,
-    "name": "name2",
-    "sex": "FEMALE",
-    "description": "d"
+    "id": 21,
+    "name": "ЧереПробабка",
+    "sex": "самка",
+    "description": "из Нидерландов"
   },
-  {
-    "id": 14,
-    "name": "name3",
-    "sex": "FEMALE",
-    "description": "d"
-  }
+  ...
 ]
 ```
 
@@ -951,10 +827,10 @@ Body:
 
 ```json
 {
-  "name": "name",
-  "sex": "FEMALE",
-  "description": "desc",
-  "id": 18
+  "id": 31,
+  "name": "string1",
+  "sex": "string1",
+  "description": "string1"
 }
 ```
 
@@ -962,10 +838,10 @@ Response:
 
 ```json
 {
-  "id": 18,
-  "name": "name",
-  "sex": "FEMALE",
-  "description": "desc"
+  "id": 31,
+  "name": "string1",
+  "sex": "string1",
+  "description": "string1"
 }
 ```
 
@@ -975,7 +851,7 @@ Response:
 
 - delete(@PathVariable("id") Long id)
 
-## PedigreeController ()
+## PedigreeController
 
 Контроллер поддерживает следующие операции:
 
@@ -993,18 +869,18 @@ Response:
 Request:
 
 ```http request
-http://localhost:8085/api/v1/pedigree/19
+http://localhost:8085/api/v1/pedigree/36
 ```
 
 Response:
 
 ```json
 {
-  "id": 19,
-  "recordId": 10,
-  "parentExistOneId": 9,
+  "id": 36,
+  "recordId": 60,
+  "parentExistOneId": 61,
   "parentExistTwoId": null,
-  "parentNotExistOneId": 17,
+  "parentNotExistOneId": null,
   "parentNotExistTwoId": null
 }
 ```
@@ -1023,19 +899,19 @@ Error:
 Request:
 
 ```http request
-http://localhost:8085/api/v1/pedigree/record/10
+http://localhost:8085/api/v1/pedigree/record/23
 ```
 
 Response:
 
 ```json
 {
-  "id": 19,
-  "recordId": 10,
-  "parentExistOneId": 9,
+  "id": 26,
+  "recordId": 23,
+  "parentExistOneId": null,
   "parentExistTwoId": null,
-  "parentNotExistOneId": 17,
-  "parentNotExistTwoId": null
+  "parentNotExistOneId": 20,
+  "parentNotExistTwoId": 21
 }
 ```
 
@@ -1052,64 +928,22 @@ Response:
 ```json
 [
   {
-    "id": 18,
-    "recordId": 7,
-    "parentExistOneId": 10,
+    "id": 26,
+    "recordId": 23,
+    "parentExistOneId": null,
+    "parentExistTwoId": null,
+    "parentNotExistOneId": 20,
+    "parentNotExistTwoId": 21
+  },
+  {
+    "id": 27,
+    "recordId": 25,
+    "parentExistOneId": 23,
     "parentExistTwoId": null,
     "parentNotExistOneId": null,
     "parentNotExistTwoId": null
   },
-  {
-    "id": 20,
-    "recordId": 9,
-    "parentExistOneId": 11,
-    "parentExistTwoId": null,
-    "parentNotExistOneId": null,
-    "parentNotExistTwoId": null
-  },
-  {
-    "id": 19,
-    "recordId": 10,
-    "parentExistOneId": 9,
-    "parentExistTwoId": null,
-    "parentNotExistOneId": 17,
-    "parentNotExistTwoId": null
-  }
-]
-```
-
-#### List<StateDictionaryDto> findAll()
-
-Request:
-
-```http request
-http://localhost:8085/api/v1/dictionaries
-```
-
-Response:
-
-```json
-[
-  {
-    "id": 3,
-    "recordId": 10,
-    "name": "state_dict_3",
-    "uuid": "26b999fe-a099-4185-a203-840d3dc26eed",
-    "description": null,
-    "dateCreated": "2024-04-30T17:59:41.13576",
-    "active": true,
-    "constant": false
-  },
-  {
-    "id": 16,
-    "recordId": 10,
-    "name": "Вес",
-    "uuid": "26b999fe-a099-4185-a203-840d3dc26eed",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent eget arcu nec mauris blandit convallis.",
-    "dateCreated": "2024-05-04T13:56:09.543726",
-    "active": true,
-    "constant": false
-  }
+  ...
 ]
 ```
 
@@ -1181,6 +1015,1013 @@ Response:
   "parentExistTwoId": null,
   "parentNotExistOneId": null,
   "parentNotExistTwoId": null
+}
+```
+
+### DELETE-запросы:
+
+Не возвращают ничего:
+
+- delete(@PathVariable("id") Long id)
+
+## RecommenderController
+
+Контроллер поддерживает следующие операции:
+
+- получение списка статей на основе анализа записей пользователя
+
+### GET-запросы:
+
+#### List<ArticleDto> findById(@PathVariable("login") String login)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/recommender/user1@mail.com
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 10,
+    "name": "Красноухие черепахи",
+    "redactorName": "editor1@mail.com",
+    "photoUuid": "dd7a0fbd-6f4d-465a-9830-ff7d4fe2a5a4",
+    "content": "Данный вид черепахи относят к пресноводным рептилиям. Ее главная особенность – длинноватые красно-оранжевые пятна, которые находятся сразу за глазами. Невзирая на то, что ушей у них нет, слышат они прекрасно. Поскольку щиток на их брюхе окрашен в ярко-желтый цвет, их еще частенько именуют желтобрюхими. Самки этих животных, как правило, намного крупнее самцов. Половое созревание этих животных наступает в 4 года.",
+    "status": "FINISHED",
+    "createDate": "2024-06-08T20:58:47.480456",
+    "updateDate": "2024-06-08T20:58:51.885453"
+  },
+  ...
+]
+```
+
+Error:
+
+```json
+{
+  "errorMessage": "Entity not found!",
+  "errorCode": 404
+}
+```
+
+## EventController
+
+Контроллер поддерживает следующие операции:
+
+- поиск эвента по id
+- поиск эвентов по id дневника
+- просмотр всех эвентов
+- создание эвента
+- обновление эвента
+- удаление эвента по id
+- удаление невктивных эвентов
+
+### GET-запросы:
+
+#### EventDto findById(@PathVariable("id") Long id)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/events/80
+```
+
+Response:
+
+```json
+{
+  "id": 80,
+  "dictionaryId": 3,
+  "textColor": "#00ff2f",
+  "description": "Трава",
+  "dateCreated": "2024-07-17T20:46:34.715"
+}
+```
+
+Error:
+
+```json
+{
+  "errorMessage": "Entity not found!",
+  "errorCode": 404
+}
+```
+
+#### List<EventDto> findByDictionaryId(@PathVariable("id") Long id)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/events/dict/3
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 80,
+    "dictionaryId": 3,
+    "textColor": "#00ff2f",
+    "description": "Трава",
+    "dateCreated": "2024-07-17T20:46:34.715"
+  },
+  {
+    "id": 81,
+    "dictionaryId": 3,
+    "textColor": "#00ff2f",
+    "description": "Трава",
+    "dateCreated": "2024-07-08T20:46:34.715"
+  },
+  ...
+]
+```
+
+#### List<EventDto> findAll()
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/events
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 80,
+    "dictionaryId": 3,
+    "textColor": "#00ff2f",
+    "description": "Трава",
+    "dateCreated": "2024-07-17T20:46:34.715"
+  },
+  {
+    "id": 81,
+    "dictionaryId": 3,
+    "textColor": "#00ff2f",
+    "description": "Трава",
+    "dateCreated": "2024-07-08T20:46:34.715"
+  },
+  ...
+]
+```
+
+### POST-запросы:
+
+#### EventDto create(@RequestBody EventCreateDto eventCreateDto)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/events
+```
+
+Body:
+
+```json
+{
+  "dictionaryId": 3,
+  "textColor": "#00ff2f",
+  "description": "Трава",
+  "dateCreated": "2024-07-17T20:46:34.715"
+}
+```
+
+Response:
+
+```json
+{
+  "id": 586,
+  "dictionaryId": 3,
+  "textColor": "#00ff2f",
+  "description": "Трава",
+  "dateCreated": "2024-07-17T20:46:34.715"
+}
+```
+
+### PUT-запросы:
+
+#### EventDto update(@RequestBody EventUpdateDto eventUpdateDto)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/events
+```
+
+Body:
+
+```json
+{
+  "id": 586,
+  "dictionaryId": 3,
+  "textColor": "#00ff2f",
+  "description": "Fish",
+  "dateCreated": "2024-07-17T20:46:34.715"
+}
+```
+
+Response:
+
+```json
+{
+  "id": 586,
+  "dictionaryId": 3,
+  "textColor": "#00ff2f",
+  "description": "Fish",
+  "dateCreated": "2024-07-17T20:46:34.715"
+}
+```
+
+### DELETE-запросы:
+
+Не возвращают ничего:
+
+- List<EventDto> deleteBeforeDateByDictionaryId(@PathVariable("id") Long id)
+- delete(@PathVariable("id") Long id)
+
+## EventDictionaryController
+
+Контроллер поддерживает следующие операции:
+
+- поиск дневника по id
+- поиск дневников по id записи
+- просмотр всех дневников
+- создание дневника
+- обновление дневника
+- удаление дневника по id
+
+### GET-запросы:
+
+#### EventDictionaryDto findById(@PathVariable("id") Long id)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/eventDictionaries/3
+```
+
+Response:
+
+```json
+{
+  "id": 3,
+  "recordId": 23,
+  "name": "Кормление",
+  "uuid": "26b999fe-a099-4185-a203-840d3dc26eed",
+  "description": null,
+  "typeVaccination": null,
+  "dateCreated": "2024-05-12T23:46:25.138416",
+  "active": true
+}
+```
+
+Error:
+
+```json
+{
+  "errorMessage": "Entity not found!",
+  "errorCode": 404
+}
+```
+
+#### List<EventDictionaryDto> findAllByRecordId(@PathVariable("id") Long id)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/eventDictionaries/recordId/23
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 3,
+    "recordId": 23,
+    "name": "Кормление",
+    "uuid": "26b999fe-a099-4185-a203-840d3dc26eed",
+    "description": null,
+    "typeVaccination": null,
+    "dateCreated": "2024-05-12T23:46:25.138416",
+    "active": true
+  },
+  {
+    "id": 4,
+    "recordId": 23,
+    "name": "Прогулка",
+    "uuid": "ebaca5c3-b383-43a2-a006-240e722b9855",
+    "description": "kkk",
+    "typeVaccination": null,
+    "dateCreated": "2024-05-12T23:53:49.074805",
+    "active": true
+  },
+  ...
+]
+```
+
+#### List<EventDictionaryDto>> findAll()
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/eventDictionaries
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 3,
+    "recordId": 23,
+    "name": "Кормление",
+    "uuid": "26b999fe-a099-4185-a203-840d3dc26eed",
+    "description": null,
+    "typeVaccination": null,
+    "dateCreated": "2024-05-12T23:46:25.138416",
+    "active": true
+  },
+  {
+    "id": 4,
+    "recordId": 23,
+    "name": "Прогулка",
+    "uuid": "ebaca5c3-b383-43a2-a006-240e722b9855",
+    "description": "kkk",
+    "typeVaccination": null,
+    "dateCreated": "2024-05-12T23:53:49.074805",
+    "active": true
+  },
+  ...
+]
+```
+
+### POST-запросы:
+
+#### EventDictionaryDto create(@RequestBody EventDictionaryCreateDto eventDictionaryCreateDto)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/eventDictionaries
+```
+
+Body:
+
+```json
+{
+  "recordId": 10,
+  "name": "string",
+  "description": "string",
+  "uuid": "00000000-0000-0000-000000000000"
+}
+```
+
+Response:
+
+```json
+{
+  "id": 33,
+  "recordId": 10,
+  "name": "string",
+  "uuid": "00000000-0000-0000-000000000000",
+  "description": "string",
+  "typeVaccination": null,
+  "dateCreated": "2024-07-16T14:28:40.534329",
+  "active": true
+}
+```
+
+### PUT-запросы:
+
+#### EventDictionaryDto update(@RequestBody EventDictionaryUpdateDto eventDictionaryUpdateDto)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/eventDictionaries
+```
+
+Body:
+
+```json
+{
+  "id": 33,
+  "recordId": 10,
+  "name": "String",
+  "uuid": "00000000-0000-0000-000000000000",
+  "description": "string",
+  "typeVaccination": null,
+  "dateCreated": "2024-07-16T14:28:40.534329",
+  "active": true
+}
+```
+
+Response:
+
+```json
+{
+  "id": 33,
+  "recordId": 10,
+  "name": "String",
+  "uuid": "00000000-0000-0000-000000000000",
+  "description": "string",
+  "typeVaccination": null,
+  "dateCreated": "2024-07-16T14:28:40.534329",
+  "active": true
+}
+```
+
+### DELETE-запросы:
+
+Не возвращают ничего:
+
+- delete(@PathVariable("id") Long id)
+
+## FavoriteArticleController
+
+Контроллер поддерживает следующие операции:
+
+- поиск сохраненной статьи по id
+- поиск сохраненной статьи по id статьи
+- просмотр сохраненных статей по логину пользователя
+- просмотр всех статей
+- создание сохраненной статьи
+- обновление сохраненной статьи
+- удаление сохраненной статьи по id
+
+### GET-запросы:
+
+#### FavoriteArticleDto findById(@PathVariable("id") Long id)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/favoriteArticles/16
+```
+
+Response:
+
+```json
+{
+  "id": 16,
+  "userLogin": "maria@mail.com",
+  "articleId": 3
+}
+```
+
+Error:
+
+```json
+{
+  "errorMessage": "Entity not found!",
+  "errorCode": 404
+}
+```
+
+#### FavoriteArticleDto findByArticleId(@PathVariable("id") Long id)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/favoriteArticles/articleId/3
+```
+
+Response:
+
+```json
+{
+  "id": 16,
+  "userLogin": "maria@mail.com",
+  "articleId": 3
+}
+```
+
+#### List<FavoriteArticleDto> findByUserLogin(@PathVariable("login") String login)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/favoriteArticles/article/maria@mail.com
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 16,
+    "userLogin": "maria@mail.com",
+    "articleId": 3
+  },
+  {
+    "id": 17,
+    "userLogin": "maria@mail.com",
+    "articleId": 4
+  },
+  {
+    "id": 19,
+    "userLogin": "maria@mail.com",
+    "articleId": 8
+  },
+  ...
+]
+```
+
+#### List<FavoriteArticleDto>> findAll()
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/favoriteArticles
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 13,
+    "userLogin": "user1@mail.com",
+    "articleId": 7
+  },
+  {
+    "id": 16,
+    "userLogin": "maria@mail.com",
+    "articleId": 3
+  },
+  ...
+]
+```
+
+### POST-запросы:
+
+#### FavoriteArticleDto create(@RequestBody FavoriteArticleCreateDto dto)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/favoriteArticles
+```
+
+Body:
+
+```json
+{
+  "userLogin": "maria@mail.com",
+  "articleId": 3
+}
+```
+
+Response:
+
+```json
+{
+  "id": 20,
+  "userLogin": "maria@mail.com",
+  "articleId": 3
+}
+```
+
+### PUT-запросы:
+
+#### FavoriteArticleDto update(@RequestBody FavoriteArticleUpdateDto dto) {
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/favoriteArticles
+```
+
+Body:
+
+```json
+{
+  "id": 20,
+  "userLogin": "maria@mail.com",
+  "articleId": 3
+}
+```
+
+Response:
+
+```json
+{
+  "id": 20,
+  "userLogin": "maria@mail.com",
+  "articleId": 3
+}
+```
+
+### DELETE-запросы:
+
+Не возвращают ничего:
+
+- delete(@PathVariable("id") Long id)
+
+## NotificationController
+
+Контроллер поддерживает следующие операции:
+
+- поиск уведомления по id
+- поиск уведомлений по логину пользователя
+- просмотр всех уведомлений
+- создание уведомления
+- обновление уведомления
+- обновление статуса уведомления
+- удаление уведомления по логину пользователя
+- удаление уведомления по id
+
+### GET-запросы:
+
+#### NotificationDto findById(@PathVariable("id") Long id)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notifications/313
+```
+
+Response:
+
+```json
+{
+  "id": 313,
+  "userLogin": "user1@mail.com",
+  "name": "Прогулка",
+  "description": null,
+  "createDate": "2024-05-29T01:08:21.039388",
+  "updateDate": "2024-05-29T01:08:21.039409",
+  "active": true
+}
+```
+
+Error:
+
+```json
+{
+  "errorMessage": "Entity not found!",
+  "errorCode": 404
+}
+```
+
+#### List<NotificationDto> findByUserLogin(@PathVariable("login") String login)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notifications/userLogin/user1@mail.com
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 313,
+    "userLogin": "user1@mail.com",
+    "name": "Прогулка",
+    "description": null,
+    "createDate": "2024-05-29T01:08:21.039388",
+    "updateDate": "2024-05-29T01:08:21.039409",
+    "active": true
+  },
+  {
+    "id": 316,
+    "userLogin": "user1@mail.com",
+    "name": "Прогулка",
+    "description": null,
+    "createDate": "2024-05-29T01:21:23.973536",
+    "updateDate": "2024-05-29T01:21:23.973562",
+    "active": true
+  },
+  ...
+]
+```
+
+#### List<NotificationDto> findAll()
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notifications
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 313,
+    "userLogin": "user1@mail.com",
+    "name": "Прогулка",
+    "description": null,
+    "createDate": "2024-05-29T01:08:21.039388",
+    "updateDate": "2024-05-29T01:08:21.039409",
+    "active": true
+  },
+  ...
+]
+```
+
+### POST-запросы:
+
+#### NotificationDto create(@RequestBody NotificationCreateDto notificationCreateDto)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notifications
+```
+
+Body:
+
+```json
+{
+  "userLogin": "user1@mail.com",
+  "name": "Прогулка",
+  "description": null,
+  "createDate": "2024-05-29T01:08:21.039388",
+  "updateDate": "2024-05-29T01:08:21.039409",
+  "active": true
+}
+```
+
+Response:
+
+```json
+{
+  "id": 319,
+  "userLogin": "user1@mail.com",
+  "name": "Прогулка",
+  "description": null,
+  "createDate": "2024-07-16T15:10:10.319455",
+  "updateDate": "2024-07-16T15:10:10.3199",
+  "active": true
+}
+```
+
+### PUT-запросы:
+
+#### NotificationDto update(@RequestBody NotificationUpdateDto notificationUpdateDto)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notifications
+```
+
+Body:
+
+```json
+{
+  "id": 319,
+  "userLogin": "user1@mail.com",
+  "name": "Прогулка",
+  "description": null,
+  "createDate": "2024-07-16T15:10:10.319455",
+  "updateDate": "2024-07-16T15:10:10.3199",
+  "active": true
+}
+```
+
+Response:
+
+```json
+{
+  "id": 319,
+  "userLogin": "user1@mail.com",
+  "name": "Прогулка",
+  "description": null,
+  "createDate": "2024-07-16T15:10:10.319455",
+  "updateDate": "2024-07-16T15:10:10.3199",
+  "active": true
+}
+```
+
+#### NotificationDto updateStatus(@PathVariable("id") Long id, @PathVariable("status") boolean status)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notifications/319/false
+```
+
+Body:
+
+```json
+{
+  "id": 319,
+  "userLogin": "user1@mail.com",
+  "name": "Прогулка",
+  "description": null,
+  "createDate": "2024-07-16T15:10:10.319455",
+  "updateDate": "2024-07-16T15:10:10.3199",
+  "active": true
+}
+```
+
+Response:
+
+```json
+{
+  "id": 319,
+  "userLogin": "user1@mail.com",
+  "name": "Прогулка",
+  "description": null,
+  "createDate": "2024-07-16T15:10:10.319455",
+  "updateDate": "2024-07-16T15:10:10.3199",
+  "active": false
+}
+```
+
+### DELETE-запросы:
+
+Не возвращают ничего:
+
+- delete(@PathVariable("id") Long id)
+- deleteNotificationsByUserLogin(@PathVariable("login") String login)
+
+## NotificationTimeController
+
+Контроллер поддерживает следующие операции:
+
+- поиск звонка уведомления по id
+- поиск звонков уведомлений по id уведомления
+- просмотр всех звонков уведомлений
+- создание звонка уведомления
+- обновление звонка уведомления
+- удаление звонка уведомления по id
+
+### GET-запросы:
+
+#### NotificationTimeDto findById(@PathVariable("id") Long id)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notificationTimes/1254
+```
+
+Response:
+
+```json
+{
+  "id": 1254,
+  "notificationId": 317,
+  "time": "2024-05-29T06:05:28.13",
+  "date": "2024-05-31T06:05:00",
+  "recordId": null,
+  "eventId": null,
+  "stateId": null
+}
+```
+
+Error:
+
+```json
+{
+  "errorMessage": "Entity not found!",
+  "errorCode": 404
+}
+```
+
+#### List<NotificationTimeDto> findAll()
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notificationTimes
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 1254,
+    "notificationId": 317,
+    "time": "2024-05-29T06:05:28.13",
+    "date": "2024-05-31T06:05:00",
+    "recordId": null,
+    "eventId": null,
+    "stateId": null
+  },
+  {
+    "id": 1255,
+    "notificationId": 318,
+    "time": "2024-06-08T19:16:32.704",
+    "date": "2024-06-09T19:16:00",
+    "recordId": null,
+    "eventId": null,
+    "stateId": null
+  },
+  ...
+]
+```
+
+#### List<NotificationTimeDto> findByNotificationId(@PathVariable("id") Long id)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notificationTimes/dict/317
+```
+
+Response:
+
+```json
+[
+  {
+    "id": 1254,
+    "notificationId": 317,
+    "time": "2024-05-29T06:05:28.13",
+    "date": "2024-05-31T06:05:00",
+    "recordId": null,
+    "eventId": null,
+    "stateId": null
+  },
+  ...
+]
+```
+
+### POST-запросы:
+
+#### NotificationTimeDto create(@RequestBody NotificationTimeCreateDto notificationTimeCreateDto)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notificationTimes
+```
+
+Body:
+
+```json
+{
+  "notificationId": 317,
+  "time": "2024-05-29T06:05:28.13",
+  "date": "2024-05-31T06:05:00",
+  "recordId": null,
+  "eventId": null,
+  "stateId": null
+}
+```
+
+Response:
+
+```json
+{
+  "id": 1256,
+  "notificationId": 317,
+  "time": "2024-05-29T06:05:28.13",
+  "date": "2024-05-31T06:05:00",
+  "recordId": null,
+  "eventId": null,
+  "stateId": null
+}
+```
+
+### PUT-запросы:
+
+#### NotificationTimeDto update(@RequestBody NotificationTimeUpdateDto notificationTimeUpdateDto)
+
+Request:
+
+```http request
+http://localhost:8085/api/v1/notificationTimes
+```
+
+Body:
+
+```json
+{
+  "id": 1256,
+  "notificationId": 316,
+  "time": "2024-05-29T06:05:28.13",
+  "date": "2024-05-31T06:05:00",
+  "recordId": null,
+  "eventId": null,
+  "stateId": null
+}
+```
+
+Response:
+
+```json
+{
+  "id": 1256,
+  "notificationId": 317,
+  "time": "2024-05-29T06:05:28.13",
+  "date": "2024-05-31T06:05:00",
+  "recordId": null,
+  "eventId": null,
+  "stateId": null
 }
 ```
 

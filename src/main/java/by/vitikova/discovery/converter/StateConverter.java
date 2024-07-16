@@ -4,9 +4,7 @@ import by.vitikova.discovery.StateDto;
 import by.vitikova.discovery.create.StateCreateDto;
 import by.vitikova.discovery.model.entity.State;
 import by.vitikova.discovery.update.StateUpdateDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 
@@ -18,6 +16,12 @@ public interface StateConverter {
      * @param source исходный объект State
      * @return преобразованный объект StateDto
      */
+    @Mappings({
+            @Mapping(target = "id", source = "id"),
+            @Mapping(target = "value", source = "value"),
+            @Mapping(target = "description", source = "description"),
+            @Mapping(target = "dictionaryId", source = "source.dictionary.id")
+    })
     StateDto convert(State source);
 
     /**
@@ -39,9 +43,9 @@ public interface StateConverter {
     /**
      * Обновление полей объекта State на основе данных из StateUpdateDto.
      *
-     * @param record объект State, который нужно обновить
-     * @param dto    объект StateUpdateDto с обновленными данными
+     * @param state объект State, который нужно обновить
+     * @param dto   объект StateUpdateDto с обновленными данными
      * @return обновленный объект State
      */
-    State merge(@MappingTarget State record, StateUpdateDto dto);
+    State merge(@MappingTarget State state, StateUpdateDto dto);
 }

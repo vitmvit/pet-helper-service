@@ -1,7 +1,6 @@
 package by.vitikova.discovery.listener;
 
 import by.vitikova.discovery.model.entity.Notification;
-import by.vitikova.discovery.model.entity.Record;
 import jakarta.persistence.PrePersist;
 
 public class NotificationListener {

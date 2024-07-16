@@ -1,8 +1,6 @@
 package by.vitikova.discovery.controller;
 
 import by.vitikova.discovery.ArticleDto;
-import by.vitikova.discovery.PedigreeDto;
-import by.vitikova.discovery.service.PedigreeService;
 import by.vitikova.discovery.service.RecommenderService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

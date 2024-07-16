@@ -39,9 +39,9 @@ public interface StateDictionaryConverter {
     /**
      * Обновление полей объекта StateDictionary на основе данных из StateUpdateDto.
      *
-     * @param record объект StateDictionary, который нужно обновить
-     * @param dto    объект StateUpdateDto с обновленными данными
+     * @param stateDictionary объект StateDictionary, который нужно обновить
+     * @param dto             объект StateUpdateDto с обновленными данными
      * @return обновленный объект StateDictionary
      */
-    StateDictionary merge(@MappingTarget StateDictionary record, StateDictionaryUpdateDto dto);
+    StateDictionary merge(@MappingTarget StateDictionary stateDictionary, StateDictionaryUpdateDto dto);
 }

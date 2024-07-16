@@ -39,9 +39,9 @@ public interface PedigreeConverter {
     /**
      * Обновление полей объекта Pedigree на основе данных из PedigreeUpdateDto.
      *
-     * @param record объект Pedigree, который нужно обновить
-     * @param dto    объект PedigreeUpdateDto с обновленными данными
+     * @param pedigree объект Pedigree, который нужно обновить
+     * @param dto      объект PedigreeUpdateDto с обновленными данными
      * @return обновленный объект Pedigree
      */
-    Pedigree merge(@MappingTarget Pedigree record, PedigreeUpdateDto dto);
+    Pedigree merge(@MappingTarget Pedigree pedigree, PedigreeUpdateDto dto);
 }

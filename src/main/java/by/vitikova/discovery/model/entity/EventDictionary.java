@@ -2,22 +2,20 @@ package by.vitikova.discovery.model.entity;
 
 import by.vitikova.discovery.listener.EventDictionaryListener;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.envers.Audited;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Entity
+@Setter
+@Getter
 @Builder
 @Audited
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(EventDictionaryListener.class)
 public class EventDictionary {
 

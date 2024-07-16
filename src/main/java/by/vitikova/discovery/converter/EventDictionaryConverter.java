@@ -39,9 +39,9 @@ public interface EventDictionaryConverter {
     /**
      * Обновление полей объекта EventDictionary на основе данных из EventUpdateDto.
      *
-     * @param record объект EventDictionary, который нужно обновить
-     * @param dto    объект EventUpdateDto с обновленными данными
+     * @param eventDictionary объект EventDictionary, который нужно обновить
+     * @param dto             объект EventUpdateDto с обновленными данными
      * @return обновленный объект EventDictionary
      */
-    EventDictionary merge(@MappingTarget EventDictionary record, EventDictionaryUpdateDto dto);
+    EventDictionary merge(@MappingTarget EventDictionary eventDictionary, EventDictionaryUpdateDto dto);
 }

@@ -39,9 +39,9 @@ public interface NotificationConverter {
     /**
      * Обновление полей объекта Notification на основе данных из NotificationUpdateDto.
      *
-     * @param record объект Notification, который нужно обновить
-     * @param dto    объект NotificationUpdateDto с обновленными данными
+     * @param notification объект Notification, который нужно обновить
+     * @param dto          объект NotificationUpdateDto с обновленными данными
      * @return обновленный объект Notification
      */
-    Notification merge(@MappingTarget Notification record, NotificationUpdateDto dto);
+    Notification merge(@MappingTarget Notification notification, NotificationUpdateDto dto);
 }

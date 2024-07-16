@@ -97,6 +97,13 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationConverter.convert(notificationRepository.save(notification));
     }
 
+    /**
+     * Обновляет статус уведомления.
+     *
+     * @param id     идентификатор уведомления
+     * @param status новый статус уведомления
+     * @return обновленное уведомление
+     */
     @Transactional
     @Override
     public NotificationDto updateStatus(Long id, boolean status) {
@@ -105,6 +112,11 @@ public class NotificationServiceImpl implements NotificationService {
         return notificationConverter.convert(notificationRepository.save(notification));
     }
 
+    /**
+     * Удаляет все уведомления для заданного пользователя.
+     *
+     * @param login логин пользователя
+     */
     @Transactional
     @Override
     public void deleteByUserLogin(String login) {
