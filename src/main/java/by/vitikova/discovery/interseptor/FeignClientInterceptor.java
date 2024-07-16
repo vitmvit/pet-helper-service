@@ -19,6 +19,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class FeignClientInterceptor implements RequestInterceptor {
 
     private static final Logger logger = LoggerFactory.getLogger(FeignClientInterceptor.class);
+
     @Autowired
     private AuthClient authClient;
 
