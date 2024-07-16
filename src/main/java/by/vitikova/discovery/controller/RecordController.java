@@ -25,11 +25,11 @@ public class RecordController {
                 .body(recordService.findById(id));
     }
 
-    @GetMapping("/user/{id}")
-    public ResponseEntity<List<RecordDto>> findByUserId(@PathVariable("id") String id) {
+    @GetMapping("/user/{login}")
+    public ResponseEntity<List<RecordDto>> findByUserLogin(@PathVariable("login") String login) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(recordService.findByUserId(id));
+                .body(recordService.findByUserLogin(login));
     }
 
     @GetMapping
@@ -58,6 +58,12 @@ public class RecordController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(recordService.update(recordUpdateDto));
+    }
+
+    @DeleteMapping("/delete/user/{login}")
+    public ResponseEntity<Void> deleteRecordsByUserLogin(@PathVariable("login") String login) {
+        recordService.deleteRecordsByUserLogin(login);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @DeleteMapping("/{id}")

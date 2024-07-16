@@ -13,5 +13,6 @@ public class RecordListener {
     @PrePersist
     public void persist(Record record) {
         record.setHasPedigree(false);
+        record.setHasExhibition(false);
     }
 }
